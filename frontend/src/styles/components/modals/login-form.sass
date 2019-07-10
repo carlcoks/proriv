@@ -1,0 +1,178 @@
+@import '@/styles/_vars.sass'
+
+.login-form
+  max-height: calc(100vh - 70px)
+  overflow: auto
+  z-index: 2000
+  position: absolute
+  top: calc(100% + 15px)
+  right: -30px
+  width: 380px
+  background: $grey
+  border-radius: 5px
+  &__head
+    display: flex
+    align-items: center
+    &-btn
+      color: $black
+      font-size: 1rem
+      font-family: $CR
+      cursor: pointer
+      padding: 20px 40px
+      border-radius: 5px
+      &.active
+        background: $white
+      &.signup
+        flex: 1 0 auto
+  &__body
+    .form
+      width: 100%
+      &-bg
+        background: $white
+      &-pad
+        &-all
+          padding: 40px
+        &-top
+          padding: 40px 40px 20px
+        &-bot
+          padding: 20px 40px 40px
+      &-line
+        width: 100%
+        margin-bottom: 25px
+        position: relative
+        &:last-child
+          margin-bottom: 0
+        &__small
+          margin-bottom: 15px
+          background: $white
+          position: relative
+          .checkbox
+            padding: 0 0 0 20px
+            width: 100%
+            &-label
+              width: 100%
+              display: block
+              color: $labelgrey
+              font-family: $CR
+              font-size: .75rem
+              margin-bottom: 10px
+            &-line
+              display: flex
+              justify-content: space-between
+              align-items: center
+              position: relative
+              &__item
+                width: 45%
+                &-label
+                  display: flex
+                  align-items: center
+                  font-size: 1rem
+                  font-family: $CR
+                  color: $black
+                  .circle
+                    flex: 1 0 auto
+                    max-width: 20px
+                    display: block
+                    position: relative
+                    margin-right: 10px
+                    border-radius: 50%
+                    background: $white
+                    box-shadow: 0px 1px 3px 0px rgba(0, 1, 5, 0.15)
+                    width: 20px
+                    height: 20px
+                  input[type="radio"]
+                    display: none
+                    &:checked + .circle
+                      &:after
+                        content: ''
+                        position: absolute
+                        top: 0
+                        left: 0
+                        right: 0
+                        bottom: 0
+                        border-radius: 50%
+                        background: $darkblue
+                        width: 8px
+                        height: 8px
+                        margin: auto
+          &:last-child
+            margin-bottom: 0
+        .validation
+          position: absolute
+          right: -25px
+          top: 0
+          bottom: 0
+          margin: auto
+          display: flex
+          align-items: center
+        .validation-pass
+          position: absolute
+          top: calc(100% + 5px)
+          left: 10px
+          font-size: .75rem
+          font-family: $CR
+          color: $errorred
+        .label-line
+          position: absolute
+          top: 13px
+          left: 20px
+          font-size: 1rem
+          font-family: $CR
+          transition: all .25s ease-out
+          color: $labelgrey
+        .inpt
+          width: 100%
+          border-radius: 5px
+          background: none
+          border: 1px solid $lightgrey
+          color: $black
+          padding: 10px 20px
+          min-height: 45px
+          font-size: 1rem
+          font-family: $CR
+          position: relative
+          z-index: 1
+          &:focus, &:valid
+            padding-top: 18px
+            padding-bottom: 6px
+            & + .label-line
+              top: 15px
+              font-size: .75rem
+              transform: translateY(-12px)
+      &-btns
+        margin-top: 40px
+        display: flex
+        align-items: center
+        justify-content: space-between
+        font-family: $CR
+        position: relative
+        .error-mess
+          position: absolute
+          top: calc(100% + 5px)
+          left: 0
+          right: 0
+          text-align: center
+          color: $errorred
+          font-size: 0.75rem
+          font-family: $CR
+        &.one-btn
+          justify-content: center
+        .send
+          background: $darkblue
+          padding: 13px 45px 15px
+          border-radius: 3px
+          font-size: 1rem
+          color: $white
+        .reset
+          padding: 12px 25px
+          border-radius: 3px
+          border: 1px solid $sameblue
+          color: $black
+          font-size: 0.75rem
+  &:after
+    content: ''
+    position: absolute
+    right: 32px
+    top: -14px
+    border: 7px solid transparent
+    border-bottom: 7px solid $white

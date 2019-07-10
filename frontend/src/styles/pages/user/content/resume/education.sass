@@ -1,0 +1,96 @@
+.education
+  display: flex
+  flex-direction: column
+  &-item
+    display: flex
+    padding: 0 35px
+    position: relative
+    justify-content: space-between
+    background: $white
+    .left-point
+      position: absolute
+      top: 0
+      left: 35px
+      height: 100%
+      .circle
+        width: 12px
+        height: 12px
+        border: 2px solid $darkblue
+        border-radius: 50%
+        display: block
+      .line
+        margin-top: 3px
+        margin-left: 5px
+        width: 2px
+        height: calc(100% - 12px - 3px - 3px)
+        background: $statusbar
+    &__block
+      display: flex
+      flex-direction: column
+      padding-left: 35px
+      padding-bottom: 35px
+      width: 100%
+      &.noPadBot
+        padding-bottom: 0
+      .block-line
+        display: flex
+        align-items: center
+        margin-bottom: 10px
+        .date
+          font-size: 0.75rem
+          color: $datecolor
+          margin-right: 20px
+        .name
+          font-size: 0.75rem
+          color: $educationname
+    &:last-child
+      .line
+        display: none
+    &.itemEdit
+      margin-bottom: 50px
+      padding: 30px 35px 50px
+      background: $commentsbg
+      border-top: 1px solid $commentsborder
+      border-bottom: 1px solid $commentsborder
+      flex-direction: column
+      .left-point
+        top: 30px
+        display: flex
+        flex-direction: column
+        .btn
+          margin-bottom: 15px
+      .save-btns
+        padding-left: 35px
+        display: flex
+        justify-content: space-between
+        align-items: center
+        margin-top: 40px
+        &__right
+          display: flex
+          align-items: center
+          .btn
+            margin-left: 25px
+      .block-line
+        display: flex
+        margin-bottom: 15px
+        label
+          margin-bottom: 5px
+          color: $labelform
+          font-size: 0.75rem
+        .inpt
+          padding: 10px 15px
+          box-shadow: 0px 5px 8px 2px rgba(0, 4, 7, 0.03)
+          border-radius: 5px
+          border: 1px solid $inputborder
+          background: $white
+          color: $black
+          width: 100%
+        &__date
+          flex: 1 0 auto
+          margin-right: 35px
+          width: 90px
+          position: relative
+        &__name
+          width: 100%
+        &:last-child
+          margin-bottom: 0

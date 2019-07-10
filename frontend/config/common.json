@@ -1,0 +1,22 @@
+{
+  "portDev": 8081,
+  "portProd": 8080,
+  "apiProd": "/",
+  "apiDev": "http://localhost:3000",
+  "timeout": 3000,
+  "https": false,
+  "dbProd": {
+    "host": "localhost",
+    "port": 3306,
+    "dbuser": "admin",
+    "dbpass": "9M3t3T1f",
+    "dbname": "fitlance"
+  },
+  "dbDev": {
+    "host": "localhost",
+    "port": 3306,
+    "dbuser": "root",
+    "dbpass": "",
+    "dbname": "fitlance"
+  }
+}

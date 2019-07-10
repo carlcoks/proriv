@@ -1,0 +1,43 @@
+@import "../vars"
+
+.left-side
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  background: $white
+  z-index: 90
+  padding-top: 80px
+  box-shadow: 0px 0px 30px 0px rgba(209, 221, 231, 0.4)
+  width: 65px
+  transition: width .3s
+  .left
+    &-menu
+      padding-top: 35px
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      &__item
+        padding: 0 25px
+        margin-bottom: 40px
+        width: 100%
+        .link
+          display: inline-flex
+          align-items: center
+          width: 100%
+          &-icon
+            width: 20px
+            margin-right: 25px
+            flex: 1 0 auto
+          &-text
+            color: $darkblue
+            white-space: nowrap
+            overflow: hidden
+            width: 100%
+  &.active
+    width: 260px
+    .left
+      &-menu
+        &__item
+          .link
+            &-text

@@ -1,0 +1,60 @@
+.btn
+  cursor: pointer
+  background: none
+  border: none
+
+.save-btns
+  width: 100%
+  display: flex
+  justify-content: space-between
+  align-items: center
+  &__right
+    button
+      margin-left: 25px
+
+//Удалить
+.addNew
+  line-height: 20px
+  padding: 10px 25px
+  color: $black
+  font-size: .75rem
+  border: 1px solid $sameblue
+  border-radius: 3px
+  display: inline-flex
+  align-items: center
+  img
+    margin-right: 10px
+
+//Изменить аватар
+.changeBtn
+  line-height: 20px
+  padding: 15px 40px
+  color: $white
+  background: rgba(62, 65, 86, .85)
+  border-radius: 3px
+  &.smallBtn
+    padding: 10px 25px
+
+//Сохранить
+.infoBtn
+  background: $darkblue
+  padding: 15px 35px
+  border-radius: 3px
+  color: $white
+
+.send
+  background: $darkblue
+  color: $white
+  padding: 15px 40px
+  border-radius: 2px
+
+.selectFile
+  display: block
+  background: $darkblue
+  border-radius: 3px
+  padding: 15px 40px
+  color: $white
+  line-height: 20px
+
+input[type="file"]
+  display: none
