@@ -82,7 +82,7 @@ export default {
       return photos;
     }
   },
-  mounted() {
+  created() {
     this.getPhotosMain({user_id: this.$route.params.id});
   },
   methods: {

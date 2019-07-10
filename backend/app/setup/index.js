@@ -2,9 +2,11 @@ const UserModel = require('../../models').user;
 const UserInfoModel = require('../../models').user_info;
 const UserStatusModel = require('../../models').user_status;
 const UserResumeModel = require('../../models').user_resume;
+
+const UserRewardsModel = require('../../models').user_rewards;
+
 const UserAlbumsModel = require('../../models').user_albums;
 const UserPhotosModel = require('../../models').user_photos;
-
 const PhotoCommentsModel = require('../../models').photo_comments;
 
 const UserDialogsModel = require('../../models').user_dialogs;
@@ -20,6 +22,7 @@ const models = {
   UserInfo: UserInfoModel,
   UserStatus: UserStatusModel,
   UserResume: UserResumeModel,
+  UserRewards: UserRewardsModel,
   UserAlbums: UserAlbumsModel,
   UserPhotos: UserPhotosModel,
   PhotoComments: PhotoCommentsModel,

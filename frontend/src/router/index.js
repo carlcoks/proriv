@@ -48,6 +48,11 @@ export function createRouter(store) {
             name: 'user-photo',
             component: () => import('@/views/components/User/Photos/Index'),
           },
+          {
+            path: 'rewards',
+            name: 'user-rewards',
+            component: () => import('@/views/components/User/Rewards/Index'),
+          }
         ],
       },
       {
