@@ -195,8 +195,6 @@ api.updateUserInfo = (User, UserInfo, Token) => (req, res) => {
     const userId = req.body.user_id,
           data = req.body.data;
 
-    console.log(data)
-
     User.findOne({
       attributes: ['id'],
       where: {

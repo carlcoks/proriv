@@ -1,0 +1,153 @@
+.lenta
+  width: 100%
+  &-add
+    padding: 40px
+    width: 100%
+    &__form
+      width: 100%
+      display: flex
+      align-items: center
+      .user
+        flex: 1 0 auto
+        &-img
+          width: 40px
+          height: 40px
+          border-radius: 50%
+          background: $white
+      .form
+        width: 100%
+        margin: 0 20px
+        display: flex
+        flex-direction: column
+        &-input
+          position: relative
+          .inpt
+            resize: none
+            width: 100%
+            border-radius: 5px
+            background: $white
+            box-shadow: 0px 5px 8px 2px rgba(0, 4, 7, 0.03)
+            border: 1px solid $borderlenta
+            padding: 12px 50px 0px 15px
+            font-size: .85rem
+            color: $black
+            font-family: "Ubuntu"
+          .addfile
+            position: absolute
+            top: 0
+            bottom: 0
+            right: 0
+            margin: auto
+            display: flex
+            align-items: center
+            padding: 0px 15px
+      .btns
+        flex: 1 0 auto
+    &__previews
+      position: relative
+      display: flex
+      flex-wrap: wrap
+      margin: 10px 50px 0
+      &-item
+        width: calc(100% / 8 - 30px)
+        margin: 0 15px
+        position: relative
+        .delete
+          position: absolute
+          top: 0
+          right: -12px
+        &__img
+          border-radius: 5px
+          background-size: cover
+          background-position: 50%
+          background-repeat: no-repeat
+          height: 50px
+          position: relative
+          overflow: hidden
+          video
+            width: auto
+            height: auto
+            max-height: 100%
+  &-list
+    width: 100%
+    padding: 40px
+    &__item
+      padding: 40px 35px
+      background: $white
+      border-radius: 5px
+      box-shadow: 0px 0px 30px 0px rgba(209, 221, 231, 0.4)
+      display: flex
+      flex-direction: column
+      margin-bottom: 50px
+      .item
+        &-top
+          width: 100%
+          display: flex
+          align-items: center
+          justify-content: space-between
+          &__user
+            display: flex
+            align-items: center
+            .image
+              flex: 1 0 auto
+              width: 40px
+              height: 40px
+              border-radius: 50%
+              background: $white
+            .info
+              margin-left: 15px
+              display: flex
+              flex-direction: column
+              &-name
+                line-height: 25px
+              &-date
+                color: $lentatext
+                font-size: .75rem
+          &__edit
+            position: relative
+            .btn
+              padding: 10px 15px
+            .edit-list
+              position: absolute
+              top: 100%
+              right: 0
+              display: flex
+              flex-direction: column
+              box-shadow: 0px 0px 15px 0px rgba(209, 221, 231, 0.4)
+              &__item
+                cursor: pointer
+                background: $white
+                padding: 15px
+                display: flex
+                align-items: center
+                transition: background .3s
+                img
+                  flex: 0 0 auto
+                span
+                  margin: 0 15px
+                &:hover
+                  background: $editbg
+      .content
+        width: 100%
+        margin-top: 20px
+        &-text
+          white-space: pre-line
+          font-size: .875rem
+          color: $lentatext
+          line-height: 20px
+        &-files
+          display: flex
+          flex-wrap: wrap
+          margin-left: -10px
+          margin-right: -10px
+          margin-top: 30px
+          &__item
+            margin: 0 10px 20px 10px
+            &.itemOne
+              width: 100%
+            &.itemTwo
+              width: calc(50% - 20px)
+            &.itemThree
+              width: calc(100% / 3 - 20px)
+            &.itemFour
+              width: calc(25% - 20px)

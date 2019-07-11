@@ -7,7 +7,9 @@ import photos from './photos';
 import rewards from './rewards';
 
 import messages from './messages';
+
 import resume from './resume';
+import lenta from './lenta';
 
 export {
   user,
@@ -18,4 +20,5 @@ export {
   rewards,
   messages,
   resume,
+  lenta,
 }

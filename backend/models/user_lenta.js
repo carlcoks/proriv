@@ -1,6 +1,6 @@
 module.exports = function(sequelize, Sequelize) {
 
-  const UserInfo = sequelize.define('user_info', {
+  const UserLenta = sequelize.define('user_lenta', {
     id: {
       autoIncrement: true,
       primaryKey: true,
@@ -9,25 +9,19 @@ module.exports = function(sequelize, Sequelize) {
     user_id: {
       type: Sequelize.INTEGER,
     },
+    text: {
+      type: Sequelize.STRING,
+    },
     src: {
       type: Sequelize.STRING,
     },
-    image: {
-      type: Sequelize.STRING,
+    date_creatd: {
+      type: Sequelize.DATE,
     },
-    bg_image: {
-      type: Sequelize.STRING,
-    },
-    main_sport: {
-      type: Sequelize.STRING,
-    },
-    dop_sport: {
-      type: Sequelize.STRING,
-    }
   }, {
-    tableName: 'user_info',
+    tableName: 'user_lenta',
   });
 
-  return UserInfo;
+  return UserLenta;
 
 }

@@ -43,6 +43,7 @@
         :admin="user_profile.id == user.user_id" />
 
     </div>
+    
   </div>
 
 </template>

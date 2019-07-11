@@ -1,13 +1,16 @@
 module.exports = function(sequelize, Sequelize) {
 
-  const UserInfo = sequelize.define('user_info', {
+  const LentaFiles = sequelize.define('lenta_files', {
     id: {
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    user_id: {
+    lenta_id: {
       type: Sequelize.INTEGER,
+    },
+    type: {
+      type: Sequelize.STRING,
     },
     src: {
       type: Sequelize.STRING,
@@ -15,19 +18,10 @@ module.exports = function(sequelize, Sequelize) {
     image: {
       type: Sequelize.STRING,
     },
-    bg_image: {
-      type: Sequelize.STRING,
-    },
-    main_sport: {
-      type: Sequelize.STRING,
-    },
-    dop_sport: {
-      type: Sequelize.STRING,
-    }
   }, {
-    tableName: 'user_info',
+    tableName: 'lenta_files',
   });
 
-  return UserInfo;
+  return LentaFiles;
 
 }

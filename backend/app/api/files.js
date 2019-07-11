@@ -24,6 +24,11 @@ api.getFileUser = () => (req, res) => {
     const url = req.url.replace('/api', '');
     pathEnd = path.resolve(__dirname, `../../${url}`);
 
+  } else if (req.url.indexOf('/api/public/lenta') > -1) {
+
+    const url = req.url.replace('/api', '');
+    pathEnd = path.resolve(__dirname, `../../${url}`);
+
   } else {
 
     const url = req.url.split('/');
