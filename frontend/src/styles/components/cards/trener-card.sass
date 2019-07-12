@@ -1,4 +1,65 @@
+@import "../../vars"
+
 .trener-card
   margin: 0 15px
   margin-bottom: 40px
   width: calc(100% / 4 - 30px)
+  background: $white
+  border-radius: 5px
+  box-shadow: 0px 0px 30px 0px rgba(209, 221, 231, 0.4)
+  top: 0
+  transition: all .3s
+  position: relative
+  &__top
+    width: 100%
+    position: relative
+    &-bg
+      height: 160px
+      width: 100%
+      background-position: 50%
+      background-size: cover
+      background-repeat: no-repeat
+      border-top-left-radius: 5px
+      border-top-right-radius: 5px
+      position: relative
+      &:after
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background: rgba(255, 255, 255, .2)
+    &-avatar
+      position: absolute
+      top: 40px
+      left: 0
+      right: 0
+      margin: auto
+      width: 170px
+      height: 170px
+      z-index: 1
+      img
+        width: 100%
+        border-radius: 5px
+  &__info
+    position: relative
+    padding: 50px 35px 15px
+    display: flex
+    flex-direction: column
+    align-items: center
+    &-title
+      margin-top: 20px
+      white-space: nowrap
+      line-height: 25px
+      color: $black
+    &-btn
+      margin-top: 30px
+      // margin: 0 auto
+    &-city
+      margin-top: 10px
+      color: $date
+      font-size: .75rem
+  &:hover
+    top: -12px
+    box-shadow: 0px 15px 25px 0px rgba(98, 111, 121, 0.4)

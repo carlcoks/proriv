@@ -1,6 +1,8 @@
 const UserModel = require('../../models').user;
 const UserInfoModel = require('../../models').user_info;
 const UserStatusModel = require('../../models').user_status;
+const UserBookmarksModel = require('../../models').user_bookmarks;
+
 const UserResumeModel = require('../../models').user_resume;
 const UserLentaModel = require('../../models').user_lenta;
 const LentaFilesModel = require('../../models').lenta_files;
@@ -24,6 +26,7 @@ const models = {
   User: UserModel,
   UserInfo: UserInfoModel,
   UserStatus: UserStatusModel,
+  UserBookmarks: UserBookmarksModel,
   UserResume: UserResumeModel,
   UserLenta: UserLentaModel,
   LentaFiles: LentaFilesModel,
