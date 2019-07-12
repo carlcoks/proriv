@@ -54,6 +54,22 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Rewards/Index'),
           },
           {
+            path: 'about',
+            name: 'user-about',
+            component: () => import('@/views/components/User/Content/Sportsman/About'),
+            meta: {
+              type: 'tabs',
+            },
+          },
+          {
+            path: 'goals',
+            name: 'user-goals',
+            component: () => import('@/views/components/User/Content/Sportsman/Goals'),
+            meta: {
+              type: 'tabs',
+            },
+          },
+          {
             path: 'resume',
             name: 'user-resume',
             component: () => import('@/views/components/User/Content/Trener/Resume'),

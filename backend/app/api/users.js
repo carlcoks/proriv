@@ -122,7 +122,7 @@ api.acceptEmail = (User) => (req, res) => {
 
   const hash = req.body.accept;
 
-  if (!hash || !id) return res.status(400).send({ success: false, message: '', })
+  if (!hash) return res.status(400).send({ success: false, message: '', })
 
   User.findOne({
     where: {

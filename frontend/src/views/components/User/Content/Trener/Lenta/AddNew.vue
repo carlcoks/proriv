@@ -9,7 +9,7 @@
       <div
         class="user">
         <img
-          :src="returnAvatar(user_profile.gender, user_profile.user_info.src, user_profile.user_info.image)"
+          :src="returnAvatar()"
           class="user-img">
       </div>
       <div
@@ -113,8 +113,15 @@ export default {
   methods: {
     ...mapActions('lenta', ['addItem']),
 
-    returnAvatar(gender, src, image) {
-      return modules.returnAvatarMini(gender, src, image);
+    returnAvatar() {
+      const profile = this.user_profile;
+      let src = '', image = '';
+      if (profile.user_profile) {
+        src = profile.user_profile.src;
+        image = profile.user_profile.image;
+      }
+      
+      return modules.returnAvatarMini(profile.gender, src, image);
     },
 
     uploadFiles(e) {

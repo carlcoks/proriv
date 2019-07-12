@@ -19,7 +19,11 @@
         <div
           v-else>
 
-          <resume-block />
+          <resume-block
+            v-if="user_profile.user_status.id == 1" />
+
+          <about-block
+            v-if="user_profile.user_status.id == 2" />
 
         </div>
 
@@ -36,26 +40,28 @@ import { mapState } from 'vuex';
 
 import TabsBlock from './Tabs';
 import ResumeBlock from './Trener/Resume';
+import AboutBlock from './Sportsman/About';
 
 export default {
   components: {
     TabsBlock,
     ResumeBlock,
+    AboutBlock,
   },
   data() {
     return {
       tabs: {
-        0: [
-          { name: 'О себе', hash: 'about', active: false, },
-          { name: 'Лента', hash: 'lenta', active: false, },
-          { name: 'Цели', hash: 'goals', active: false, },
-        ],
         1: [
           { name: 'Резюме', hash: 'resume', active: false, },
           { name: 'Лента', hash: 'lenta', active: false, },
           { name: 'Видеоуроки', hash: 'videouroki', active: false, },
           { name: 'Услуги', hash: 'uslugi', active: false, },
-        ]
+        ],
+        2: [
+          { name: 'О себе', hash: 'about', active: false, },
+          { name: 'Лента', hash: 'lenta', active: false, },
+          { name: 'Цели', hash: 'goals', active: false, },
+        ],
       },
     }
   },
@@ -64,13 +70,21 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      if (this.$route.name == 'user')
-        this.$router.push({ name: 'user-resume' })
+      if (this.$route.name == 'user') {
+        if (this.user_profile.user_status.id == 1)
+          this.$router.push({ name: 'user-resume' })
+        else if (this.user_profile.user_status.id == 2)
+          this.$router.push({ name: 'user-about' })
+      }
     }
   },
-  created() {
-    if (this.$route.name == 'user')
-      this.$router.push({ name: 'user-resume' })
+  mounted() {
+    if (this.$route.name == 'user') {
+      if (this.user_profile.user_status.id == 1)
+        this.$router.push({ name: 'user-resume' })
+      else if (this.user_profile.user_status.id == 2)
+        this.$router.push({ name: 'user-about' })
+    }
   },
   methods: {
     // checkTabs() {
