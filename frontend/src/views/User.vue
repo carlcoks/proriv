@@ -69,9 +69,18 @@
             <div
               class="info-user__bot">
               <button-block
-                v-if="user.auth && user.user_id != user_profile.id"
+                v-if="user.user_id != user_profile.id"
                 :title="`Написать сообщение`"
                 :className="`infoBtn`" />
+              <button-block
+                v-if="user.auth && user.user_id == user_profile.id"
+                :title="`Редактировать профиль`"
+                :className="`infoBtn`" />
+
+              <user-info
+                :spealist="user_profile.user_status.name"
+                :dateCreated="user_profile.date_created" />
+
             </div>
           </div>
         </div>
@@ -91,7 +100,8 @@
 
     </div>
 
-    <router-view />
+    <router-view
+      v-if="!$route.meta.type" />
 
   </section>
 
@@ -108,6 +118,7 @@ import ChangeContacts from '@/components/Modals/Profile/ChangeContacts';
 import ChangeSport from '@/components/Modals/Profile/ChangeSport';
 
 import UserMain from './components/User/Main';
+import UserInfo from './components/User/UserInfo';
 
 export default {
   name: 'user',
@@ -121,6 +132,7 @@ export default {
     ChangeContacts,
     ChangeSport,
     UserMain,
+    UserInfo,
   },
   computed: {
     ...mapState('profile', ['user_profile']),

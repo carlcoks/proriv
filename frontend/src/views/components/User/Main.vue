@@ -23,9 +23,11 @@
 
       <div
         class="commoncard">
+        
         <photo-block />
 
         <video-block />
+
       </div>
 
     </div>

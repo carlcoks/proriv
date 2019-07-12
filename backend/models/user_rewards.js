@@ -26,6 +26,13 @@ module.exports = function(sequelize, Sequelize) {
     },
   }, {
     tableName: 'user_rewards',
+    // classMethods: {
+    //   associate: function(models) {
+    //     UserRewards.belongsTo(models.User, {
+    //       foreignKey: "user_id"
+    //     });
+    //   }
+    //  }
   });
 
   return UserRewards;

@@ -1,0 +1,95 @@
+.videouroki
+  width: 100%
+  padding: 50px 40px 0
+  &-title
+    display: flex
+    align-items: center
+    justify-content: space-between
+    line-height: 20px
+    font-size: 1.3rem
+  &-list
+    margin-top: 25px
+    margin-left: -15px
+    margin-right: -15px
+    display: flex
+    flex-wrap: wrap
+    align-items: flex-start
+    &__item
+      margin: 0 15px 25px
+      width: calc(100% / 3 - 30px)
+      position: relative
+      height: 290px
+      border-radius: 5px
+      top: 0px
+      transition: top .3s
+      box-shadow: 0px 0px 30px 0px rgba(115, 129, 141, 0.4)
+      &.add-item
+        min-height: 290px
+        box-shadow: 0px 0px 30px 0px rgba(209, 221, 231, 0.4)
+        border-radius: 5px
+        background: $white
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        .add-item__btn
+          width: 100px
+          height: 100px
+          margin-bottom: 30px
+          border-radius: 50%
+          border: 1px solid $sameblue
+          display: flex
+          align-items: center
+          justify-content: center
+        .add-item__text
+          line-height: 20px
+          color: $darkblue
+      .item
+        &-image
+          height: 180px
+          width: 100%
+          background-repeat: no-repeat
+          background-size: cover
+          background-position: 50%
+          position: relative
+          border-radius: 5px
+          &:after
+            content: ''
+            position: absolute
+            top: 0
+            left: 0
+            bottom: 0
+            right: 0
+            background: linear-gradient( 0deg, rgb(62,65,86) 0%, rgba(62,65,86,0.50196) 100%)
+            z-index: 1
+            border-top-left-radius: 5px
+            border-top-right-radius: 5px
+        &-about
+          position: absolute
+          bottom: 0
+          left: 0
+          right: 0
+          padding: 0 15px 15px
+          background: $darkblue
+          height: 110px
+          z-index: 1
+          border-bottom-left-radius: 5px
+          border-bottom-right-radius: 5px
+          &__title
+            height: 60px
+            text-overflow: ellipsis
+            -webkit-line-clamp: 3
+            -webkit-box-orient: vertical
+            display: -webkit-box
+            overflow: hidden
+            line-height: 20px
+            color: $white
+            margin-bottom: 15px
+          &__price
+            line-height: 20px
+            color: $white
+            font-family: 'ClearSans-Bold'
+      &:hover
+        top: -10px
+
+@import './videokurs'

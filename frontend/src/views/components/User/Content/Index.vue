@@ -9,22 +9,21 @@
     <div
       class="content-page">
 
-      <div
-        v-if="user_profile.user_status.id == 1">
+      <transition
+        name="slideLeft"
+        mode="out-in">
 
-        <transition
-          name="slideLeft"
-          mode="out-in">
+        <router-view
+          v-if="$route.meta.type == 'tabs'" />
 
-          <resume-block
-            v-if="tabs[1][0].active" />
+        <div
+          v-else>
 
-          <lenta-block
-            v-if="tabs[1][1].active" />
+          <resume-block />
 
-        </transition>
+        </div>
 
-      </div>
+      </transition>
 
     </div>
 
@@ -37,13 +36,11 @@ import { mapState } from 'vuex';
 
 import TabsBlock from './Tabs';
 import ResumeBlock from './Trener/Resume';
-import LentaBlock from './Trener/Lenta';
 
 export default {
   components: {
     TabsBlock,
     ResumeBlock,
-    LentaBlock,
   },
   data() {
     return {
@@ -56,7 +53,7 @@ export default {
         1: [
           { name: 'Резюме', hash: 'resume', active: false, },
           { name: 'Лента', hash: 'lenta', active: false, },
-          { name: 'Видео уроки', hash: 'videouroki', active: false, },
+          { name: 'Видеоуроки', hash: 'videouroki', active: false, },
           { name: 'Услуги', hash: 'uslugi', active: false, },
         ]
       },
@@ -66,27 +63,29 @@ export default {
     ...mapState('profile', ['user_profile']),
   },
   watch: {
-    $route (to, from) {
-      this.checkTabs();
+    '$route' (to, from) {
+      if (this.$route.name == 'user')
+        this.$router.push({ name: 'user-resume' })
     }
   },
-  mounted() {
-    this.checkTabs();
+  created() {
+    if (this.$route.name == 'user')
+      this.$router.push({ name: 'user-resume' })
   },
   methods: {
-    checkTabs() {
-      const id = this.user_profile.user_status.id;
-      const hash = this.$route.hash.replace('#', '');
-      if (hash != '') {
-        this.tabs[id].map(item => {
-          item.active = false
-          if (item.hash == hash)
-            item.active = true;
-        })
-      } else {
-        this.tabs[id][0].active = true;
-      }
-    }
+    // checkTabs() {
+    //   const id = this.user_profile.user_status.id;
+    //   const hash = this.$route.hash.replace('#', '');
+    //   if (hash != '') {
+    //     this.tabs[id].map(item => {
+    //       item.active = false
+    //       if (item.hash == hash)
+    //         item.active = true;
+    //     })
+    //   } else {
+    //     this.tabs[id][0].active = true;
+    //   }
+    // }
   },
 }
 </script>

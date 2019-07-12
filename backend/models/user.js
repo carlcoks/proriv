@@ -43,6 +43,13 @@ module.exports = function(sequelize, Sequelize) {
     },
   }, {
     tableName: 'users',
+    // classMethods: {
+    //   associate: function(models) {
+    //     User.hasMany(models.UserRewards, {
+    //       foreignKey: "user_id"
+    //     });
+    //   }
+    //  }
   });
 
   User.generateHash = function(password) {

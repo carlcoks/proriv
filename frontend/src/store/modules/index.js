@@ -10,6 +10,11 @@ import messages from './messages';
 
 import resume from './resume';
 import lenta from './lenta';
+import videouroki from './videouroki';
+import uslugi from './uslugi';
+
+// Поиск тренера
+import treners from './treners';
 
 export {
   user,
@@ -21,4 +26,7 @@ export {
   messages,
   resume,
   lenta,
+  videouroki,
+  uslugi,
+  treners,
 }

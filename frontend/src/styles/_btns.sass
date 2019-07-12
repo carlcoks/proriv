@@ -15,20 +15,26 @@
 //Удалить
 .addNew
   line-height: 20px
-  padding: 10px 25px
+  padding: 8px 25px 10px
   color: $black
   font-size: .75rem
   border: 1px solid $sameblue
   border-radius: 3px
   display: inline-flex
   align-items: center
+  background: $white
+  transition: background .3
   img
     margin-right: 10px
+  &:hover
+    background: #dce6ed33
+  &:active
+    background: #dce6ed80
 
 //Изменить аватар
 .changeBtn
   line-height: 20px
-  padding: 15px 40px
+  padding: 13px 40px 15px
   color: $white
   background: rgba(62, 65, 86, .85)
   border-radius: 3px
@@ -38,15 +44,25 @@
 //Сохранить
 .infoBtn
   background: $darkblue
-  padding: 15px 35px
+  padding: 13px 40px 15px
   border-radius: 3px
   color: $white
+  transition: background .3s
+  &:hover
+    background: #3e4156e6
+  &:active
+    background: #3e4156b3
 
 .send
   background: $darkblue
   color: $white
-  padding: 15px 40px
+  padding: 13px 40px 15px
   border-radius: 2px
+  transition: background .3s
+  &:hover
+    background: #3e4156e6
+  &:active
+    background: #3e4156b3
 
 .selectFile
   display: block

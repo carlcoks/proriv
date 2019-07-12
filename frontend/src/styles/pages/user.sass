@@ -59,6 +59,7 @@
       z-index: 10
       position: relative
       &-avatar
+        flex: 0 0 auto
         width: 170px
         min-height: 190px
         position: relative
@@ -100,6 +101,7 @@
             &.green
               color: $lightgreen
       &-user
+        width: 100%
         padding: 20px 30px 30px
         display: flex
         flex-direction: column
@@ -119,6 +121,21 @@
           width: 100%
           display: flex
           justify-content: space-between
+          &-list
+            display: flex
+            .info-item
+              display: flex
+              flex-direction: column
+              align-items: center
+              padding: 0 10px
+              border-left: 1px solid $userinfoborder
+              &__label
+                color: $cardtitle
+                margin-bottom: 10px
+              &__name
+                color: $darkblue
+              &:first-child
+                border-left: none
   &__main
     display: flex
     margin-left: -15px

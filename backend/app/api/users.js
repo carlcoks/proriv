@@ -170,7 +170,7 @@ api.getUser = (User, UserStatus, UserInfo) => (req, res) => {
   User.hasOne(UserInfo, {sourceKey: 'id', foreignKey: 'user_id'});
 
   User.findOne({
-    attributes: ['id', 'email', 'firstname', 'lastname', 'gender', 'telefon'],
+    attributes: ['id', 'email', 'firstname', 'lastname', 'gender', 'telefon', 'date_created'],
     where: {
       id: userId,
     },

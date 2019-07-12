@@ -52,8 +52,79 @@ export function createRouter(store) {
             path: 'rewards',
             name: 'user-rewards',
             component: () => import('@/views/components/User/Rewards/Index'),
-          }
+          },
+          {
+            path: 'resume',
+            name: 'user-resume',
+            component: () => import('@/views/components/User/Content/Trener/Resume'),
+            meta: {
+              type: 'tabs',
+            },
+          },
+          {
+            path: 'lenta',
+            name: 'user-lenta',
+            component: () => import('@/views/components/User/Content/Trener/Lenta'),
+            meta: {
+              type: 'tabs',
+            },
+          },
+          {
+            path: 'videouroki',
+            component: () => import('@/views/components/User/Content/Trener/Videouroki'),
+            meta: {
+              type: 'tabs',
+            },
+            children: [
+              {
+                path: '/',
+                name: 'user-videouroki',
+                component: () => import('@/views/components/User/Content/Trener/Videouroki/Index'),
+                meta: {
+                  type: 'tabs',
+                },
+              },
+              {
+                path: 'kursi/:kurs',
+                name: 'user-videokurs',
+                component: () => import('@/views/components/User/Content/Trener/Videouroki/Videokurs/Index'),
+                meta: {
+                  type: 'tabs',
+                },
+              },
+              // {
+              //   path: '/',
+              //   name: 'user-videouroki',
+              //   component: () => import('@/views/components/User/Content/Trener/Videouroki/Index'),
+              //   meta: {
+              //     type: 'tabs',
+              //   },
+              // }
+            ]
+          },
+          {
+            path: 'uslugi',
+            component: () => import('@/views/components/User/Content/Trener/Uslugi'),
+            meta: {
+              type: 'tabs',
+            },
+            children: [
+              {
+                path: '/',
+                name: 'user-uslugi',
+                component: () => import('@/views/components/User/Content/Trener/Uslugi/Index'),
+                meta: {
+                  type: 'tabs',
+                },
+              },
+            ]
+          },
         ],
+      },
+      {
+        path: '/treners',
+        name: 'treners',
+        component: () => import('@/views/Treners'),
       },
       {
         path: '/im',

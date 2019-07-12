@@ -115,8 +115,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import ModalLayout from '../ModalLayout';
 import http from '@/utils/api';
+
+import ModalLayout from '../ModalLayout';
 
 export default {
   components: {

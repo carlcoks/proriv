@@ -30,8 +30,15 @@ const mutations = {
 
   [TYPES.CHANGE_PROFILE](state, payload) {
     if (payload) {
-      for (let key in payload) {
-        state.user_profile[key] = payload[key];
+
+      if (payload.user_info) {
+        for (let key in payload.user_info) {
+          state.user_profile.user_info[key] = payload.user_info[key];
+        }
+      } else {
+        for (let key in payload) {
+          state.user_profile[key] = payload[key];
+        }
       }
     }
   }
