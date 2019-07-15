@@ -72,12 +72,15 @@ export default {
   computed: {
     ...mapState('user', ['user']),
   },
-  mounted() {
+  created() {
     this.getAllSport();
+    this.getCountries();
+  },
+  mounted() {
     this.checkAcceptEmail();
   },
   methods: {
-    ...mapActions(['getAllSport']),
+    ...mapActions(['getAllSport', 'getCountries']),
     ...mapMutations('layout', ['CHANGE_AFTER_ACCEPT_MODAL']),
 
     async checkAcceptEmail() {

@@ -18,7 +18,7 @@
     </div>
     <div
       class="trener-card__info">
-
+ 
       <router-link
         :to="`/user/${item.id}`"
         class="trener-card__info-title">

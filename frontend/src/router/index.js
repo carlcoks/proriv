@@ -151,6 +151,11 @@ export function createRouter(store) {
         component: () => import('@/views/Treners'),
       },
       {
+        path: '/bookmarks',
+        name: 'bookmarks',
+        component: () => import('@/views/Bookmarks'),
+      },
+      {
         path: '/im',
         name: 'messages',
         component: () => import('@/views/Im'),

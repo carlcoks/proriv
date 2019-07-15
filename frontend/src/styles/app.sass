@@ -68,6 +68,9 @@ body
 .pt-80
   padding-top: 80px
 
+.bg-fon
+  background: $userbg
+
 .wr
   max-width: 1220px
   width: 100%
@@ -129,17 +132,17 @@ body
   transform: translateY(50px)
   opacity: 0
 
-// .education-item
-//   backface-visibility: hidden
-//   z-index: 1
-// .education-item-move
-//   transition: all .5s ease-out
-// .education-item-enter-active
-//   transition: all .3s
-// .education-item-leave-active
-//   transition: all .2s
-//   position: absolute
-//   z-index: 0
-// .education-item-enter,
-// .education-item-leave-to
-//   opacity: 0
+.slideMove
+  backface-visibility: hidden
+  z-index: 1
+.slideMove-move
+  transition: all .5s ease-out
+.slideMove-enter-active
+  transition: all .3s
+.slideMove-leave-active
+  transition: all .2s
+  position: absolute
+  z-index: 0
+.slideMove-enter,
+.slideMove-leave-to
+  opacity: 0

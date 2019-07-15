@@ -6,6 +6,10 @@ const namespaced = true;
 
 const state = {
   treners: [],
+  sort: null,
+  filter: {
+    sport: '',
+  },
 }
 
 const actions = {
@@ -24,6 +28,18 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.SET_FILTER](state, payload) {
+    if (payload) {
+      for (let key in payload) {
+        state.filter[key] = payload[key];
+      }
+    }
+  },
+
+  [TYPES.SET_SORT](state, payload) {
+    state.sort = payload;
+  },
+
   [TYPES.SET_TRENERS](state, payload) {
     state.treners = payload;
   }

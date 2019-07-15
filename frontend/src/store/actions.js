@@ -15,3 +15,13 @@ export async function getAllSport({ commit }) {
     console.log('Err: ', e);
   }
 }
+
+export async function getCountries({ commit }) {
+  try {
+    const response = await http.get('/api/v1/countries');
+    const { result } = response.data;
+    commit(TYPES.SET_COUNTRIES, result);
+  } catch(e) {
+    console.log(e);
+  }
+}

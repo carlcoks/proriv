@@ -64,13 +64,14 @@ api.signup = (User) => (req, res) => {
           })
         },
         (callback) => {
-          (async () => {
+          // (async () => {
             const link = `${urlAddress}/?accept-email=${newHash}`;
             let text = `Подтвердите ваш email адрес перейдя по ссылке: ${link}`;
 
-            const response = await mailer.sendMail('Подтверждение email адреса', text, email);
+            // const response = await mailer.sendMail('Подтверждение email адреса', text, email);
+            mailer.sendMail('Подтверждение email адреса', text, email);
             callback(null);
-          })()
+          // })()
         }
       ], (err, result) => {
         if (err) return res.status(400).send({ success: false, message: 'Произошла ошибка' })
@@ -162,6 +163,35 @@ api.getSport = (SportType) => (req, res) => {
 
     res.json({ success: true, result: types });
 
+  })
+
+}
+
+// Взять все страны и города
+api.getCountries = (GeoCity, GeoCountry) => (req, res) => {
+
+  async.parallel([
+    (callback) => {
+      GeoCity.findAll({})
+      .then(cities => {
+        callback(null, cities);
+      })
+    },
+    (callback) => {
+      GeoCountry.findAll({})
+      .then(countries => {
+        callback(null, countries);
+      })
+    },
+  ], (err, result) => {
+    if (err) return res.status(400).send({ success: false, message: err });
+
+    res.json({ success: true,
+      result: {
+        cities: result[0],
+        countries: result[1],
+      }
+    })
   })
 
 }

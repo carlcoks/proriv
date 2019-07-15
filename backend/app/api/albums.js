@@ -50,53 +50,62 @@ api.createAlbum = (User, UserAlbums, UserPhotos, Token) => (req, res) => {
 
         file.on('end', function() {
 
-          sharp(saveTo)
-            .resize(65, 65)
-            .toFile(fullLink+'/mini_'+fileName, (err, info) => {
-              if (err)
-                errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                // return res.status(400).send({ success: false, message: 'sharp_mini: '+err })
-            });
-          sharp(saveTo)
-            .resize(270, 200)
-            .toFile(fullLink+'/cover_'+fileName, (err, info) => {
-              if (err)
-                errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-            });
+          async.parallel([
+            (callback) => {
+              sharp(saveTo)
+                .resize(65, 65)
+                .toFile(fullLink+'/mini_'+fileName, (err, info) => {
+                  if (err)
+                    return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                  callback(null);
+                });
+            },
+            (callback) => {
+              sharp(saveTo)
+                .resize(270, 200)
+                .toFile(fullLink+'/cover_'+fileName, (err, info) => {
+                  if (err)
+                    return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                  callback(null);
+                });
+            }
+          ], (err, resultend) => {
+            if (err) return res.status(400).send({ success: false, message: err });
 
-          if (length == key) {
+            if (length == key) {
 
-            UserAlbums.create({
-              user_id: userId,
-              title: title,
-            })
-            .then((album) => {
-              const albumId = album.dataValues.id;
+              UserAlbums.create({
+                user_id: userId,
+                title: title,
+              })
+              .then((album) => {
+                const albumId = album.dataValues.id;
 
-              imgArray.map(item => {
-                item.album_id = albumId;
+                imgArray.map(item => {
+                  item.album_id = albumId;
+                })
+
+                UserPhotos.bulkCreate(imgArray)
+                  .then(() => {
+
+                    let result = {
+                      success: true,
+                      message: 'Альбом успешно добавлен'
+                    }
+                    if (errorMess != '') {
+                      result.success = false;
+                      result.message = errorMess;
+                    }
+
+                    res.json(result)
+
+                  })
               })
 
-              UserPhotos.bulkCreate(imgArray)
-                .then(() => {
+            }
+            key++;
 
-                  let result = {
-                    success: true,
-                    message: 'Альбом успешно добавлен'
-                  }
-                  if (errorMess != '') {
-                    result.success = false;
-                    result.message = errorMess;
-                  }
-
-                  res.json(result)
-
-                })
-            })
-
-          }
-          key++;
+          })
 
         })
 

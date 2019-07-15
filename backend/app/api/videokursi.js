@@ -69,55 +69,64 @@ api.addVideokurs = (User, UserVideokursi, Token) => (req, res) => {
 
         file.on('end', function() {
 
-          if (fieldname == 'cover') {
-            sharp(saveTo)
-              .resize(240, 190)
-              .toFile(fullLink+'/cover_'+fileName, (err, info) => {
-                if (err)
-                  errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                  // return res.status(400).send({ success: false, message: 'sharp_mini: '+err })
-              });
-          }
-
-          if (length == key) {
-
-            const allFiles = JSON.stringify(filesArray);
-
-            UserVideokursi.create({
-              user_id: userId,
-              title: title,
-              description: description,
-              price: price,
-              src: fullLink,
-              image: coverName,
-              preview: previewName,
-              files: allFiles,
-            })
-            .then((kurs) => {
-              const kursId = kurs.dataValues.id;
-
-              let result = {
-                success: true,
-                message: 'Видеокурс успешно добавлен',
-                result: {
-                 id: kursId,
-                 title: title,
-                 price: price,
-                 src: fullLink,
-                 image: coverName,
-               }
+          async.parallel([
+            (callback) => {
+              if (fieldname == 'cover') {
+                sharp(saveTo)
+                  .resize(240, 190)
+                  .toFile(fullLink+'/cover_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              } else {
+                callback(null);
               }
+            }
+          ], (err, resultend) => {
+            if (err) return res.status(400).send({ success: false, message: err })
 
-              if (errorMess != '') {
-                result.success = false;
-                result.message = errorMess;
-              }
+            if (length == key) {
 
-              res.json(result)
-            })
+              const allFiles = JSON.stringify(filesArray);
 
-          }
-          key++;
+              UserVideokursi.create({
+                user_id: userId,
+                title: title,
+                description: description,
+                price: price,
+                src: fullLink,
+                image: coverName,
+                preview: previewName,
+                files: allFiles,
+              })
+              .then((kurs) => {
+                const kursId = kurs.dataValues.id;
+
+                let result = {
+                  success: true,
+                  message: 'Видеокурс успешно добавлен',
+                  result: {
+                   id: kursId,
+                   title: title,
+                   price: price,
+                   src: fullLink,
+                   image: coverName,
+                 }
+                }
+
+                if (errorMess != '') {
+                  result.success = false;
+                  result.message = errorMess;
+                }
+
+                res.json(result)
+              })
+
+            }
+            key++;
+
+          })
 
         })
 

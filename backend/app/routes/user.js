@@ -19,6 +19,9 @@ module.exports = (app) => {
   app.route('/api/v1/sport')
     .get(api.getSport(models.SportType))
 
+  app.route('/api/v1/countries')
+    .get(api.getCountries(models.GeoCity, models.GeoCountry))
+
   app.route('/api/v1/user-info')
     .put(passport.authenticate('jwt', config.session), api.updateUserInfo(models.User, models.UserInfo, app.get('secretpass')))
 

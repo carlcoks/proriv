@@ -42,40 +42,49 @@ api.createReward = (User, UserRewards, Token) => (req, res) => {
 
         file.on('end', function() {
 
-          sharp(saveTo)
-            .resize(270, 200)
-            .toFile(fullLink+'/cover_'+fileName, (err, info) => {
-              if (err)
-                errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-            });
-
-          sharp(saveTo)
-            .resize(270, 150)
-            .toFile(fullLink+'/mini_'+fileName, (err, info) => {
-              if (err)
-                errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-            });
-
-          UserRewards.create({
-            user_id: userId,
-            src: fullLink,
-            image: fileName,
-            title: title,
-            description: description,
-          })
-          .then(() => {
-            let result = {
-              success: true,
-              message: 'Награда успешно добавлена'
+          async.parallel([
+            (callback) => {
+              sharp(saveTo)
+                .resize(270, 200)
+                .toFile(fullLink+'/cover_'+fileName, (err, info) => {
+                  if (err)
+                    return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                  callback(null);
+                });
+            },
+            (callback) => {
+              sharp(saveTo)
+                .resize(270, 150)
+                .toFile(fullLink+'/mini_'+fileName, (err, info) => {
+                  if (err)
+                    return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                  callback(null);
+                });
             }
-            if (errorMess != '') {
-              result.success = false;
-              result.message = errorMess;
-            }
+          ], (err, resultend) => {
+            if (err) return res.status(400).send({ success: false, message: err })
 
-            res.json(result)
+            UserRewards.create({
+              user_id: userId,
+              src: fullLink,
+              image: fileName,
+              title: title,
+              description: description,
+            })
+            .then(() => {
+              let result = {
+                success: true,
+                message: 'Награда успешно добавлена'
+              }
+              if (errorMess != '') {
+                result.success = false;
+                result.message = errorMess;
+              }
+
+              res.json(result)
+
+            })
+
           })
 
         })
