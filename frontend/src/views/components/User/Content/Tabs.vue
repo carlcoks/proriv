@@ -42,13 +42,14 @@ export default {
         if (hash) {
           const items = tabs.children;
           for (let key in items) {
-            let item = items[key].getAttribute("id");
+            let item = items[key].id;
             if (item == hash) {
               tabsLine.style.left = items[key].offsetLeft+'px';
               tabsLine.style.width = items[key].offsetWidth+'px';
               return false;
             }
           }
+          this.$router.push(`/user/${this.$route.params.id}`)
         } else {
           const item = tabs.children[0];
           tabsLine.style.left = item.offsetLeft+'px';

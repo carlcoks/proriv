@@ -4,6 +4,7 @@
     class="videouroki-list">
 
     <a
+      v-if="admin"
       href="/add"
       title="Добавить курс"
       class="videouroki-list__item add-item"
@@ -48,7 +49,7 @@
 import { mapMutations } from 'vuex';
 
 export default {
-  props: ['data'],
+  props: ['admin', 'data'],
   methods: {
     ...mapMutations('videouroki', ['CHANGE_ADD_KURS']),
   }

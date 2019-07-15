@@ -12,6 +12,7 @@ import resume from './resume';
 import lenta from './lenta';
 import videouroki from './videouroki';
 import uslugi from './uslugi';
+import goals from './goals';
 
 // Поиск тренера
 import treners from './treners';
@@ -28,5 +29,6 @@ export {
   lenta,
   videouroki,
   uslugi,
+  goals,
   treners,
 }

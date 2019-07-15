@@ -52,10 +52,13 @@ export default {
     return {
       openMenu: false,
       items: [
-        // { href: '', icon: 'lenta', text: 'Лента' },
-        // { href: '', icon: 'favorites', text: 'Избранное' },
+        { href: `/user/${this.userId}/lenta`, icon: 'lenta', text: 'Лента' },
+        { href: '/bookmarks', icon: 'favorites', text: 'Избранное' },
         { href: '/im', icon: 'messages', text: 'Сообщения' },
-        { href: `/user/${this.userId}#resume`, icon: 'resume', text: 'Резюме' },
+        { href: `/user/${this.userId}/albums`, icon: 'icon-photo', text: 'Фотогалерея' },
+        { href: `/user/${this.userId}/videos`, icon: 'icon-video', text: 'Видео' },
+        { href: `/user/${this.userId}/rewards`, icon: 'icon-reward', text: 'Награды' },
+        { href: `/user/${this.userId}`, icon: 'resume', text: 'Резюме' },
       ]
     }
   }

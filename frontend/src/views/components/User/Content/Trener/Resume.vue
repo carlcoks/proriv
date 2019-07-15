@@ -24,6 +24,7 @@
         :admin="user_profile.id == user.user_id" />
 
     </div>
+    
     <div
       class="resume-block">
       <div
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import http from '@/utils/api';
 import educationModel from '@/models/model-education';
 
@@ -59,6 +60,9 @@ import EducationBlock from './Resume/Education';
 import JobBlock from './Resume/Job';
 
 export default {
+  asyncData ({ store, route }, data) {
+    return store.dispatch('resume/getResume', { user_id: route.params.id });
+  },
   components: {
     ButtonBlock,
     AboutBlock,
@@ -75,11 +79,7 @@ export default {
     ...mapState('user', ['user']),
     ...mapState('resume', ['resume', 'education', 'job']),
   },
-  created() {
-    this.getResume({ user_id: this.$route.params.id });
-  },
   methods: {
-    ...mapActions('resume', ['getResume']),
     ...mapMutations('resume', ['ADD_EDUCATION', 'ADD_JOB']),
 
     addEducation() {

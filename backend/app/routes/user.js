@@ -13,7 +13,8 @@ module.exports = (app) => {
     .post(api.acceptEmail(models.User));
 
   app.route('/api/v1/user')
-    .get(api.getUser(models.User, models.UserStatus, models.UserInfo))
+    .get(api.getUser(models.User, models.UserStatus, models.UserInfo, models.UserFree))
+    .put(passport.authenticate('jwt', config.session), api.updateUser(models.User, app.get('secretpass')))
 
   app.route('/api/v1/sport')
     .get(api.getSport(models.SportType))

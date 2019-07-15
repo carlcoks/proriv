@@ -4,7 +4,7 @@ const fs = require('fs'),
       sharp = require('sharp'),
       crypto = require('crypto'),
       async = require('async'),
-      functions = require('../../scripts/functions');
+      rimraf = require("rimraf");
 
 const api = {};
 
@@ -55,77 +55,96 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
 
         file.on('end', function() {
 
-          if (type == 'image') {
-            sharp(saveTo)
-              .resize(720, 450)
-              .toFile(linkDir+'/big_'+fileName, (err, info) => {
-                if (err)
-                  errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                  // return res.status(400).send({ success: false, message: 'sharp_mini: '+err })
-              });
-            sharp(saveTo)
-              .resize(350, 270)
-              .toFile(linkDir+'/same_'+fileName, (err, info) => {
-                if (err)
-                  errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                  // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-              });
-            sharp(saveTo)
-              .resize(230, 170)
-              .toFile(linkDir+'/small_'+fileName, (err, info) => {
-                if (err)
-                  errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                  // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-              });
-            sharp(saveTo)
-              .resize(170, 125)
-              .toFile(linkDir+'/mini_'+fileName, (err, info) => {
-                if (err)
-                  errorMess = 'Некоторые фотографии имеют не поддерживаемый формат';
-                  // return res.status(400).send({ success: false, message: 'sharp_cover: '+err })
-              });
-          }
+          async.parallel([
+            (callback) => {
+              if (type == 'image') {
+                sharp(saveTo)
+                  .resize(720, 450)
+                  .toFile(linkDir+'/big_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              }
+            },
+            (callback) => {
+              if (type == 'image') {
+                sharp(saveTo)
+                  .resize(350, 270)
+                  .toFile(linkDir+'/same_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              }
+            },
+            (callback) => {
+              if (type == 'image') {
+                sharp(saveTo)
+                  .resize(230, 170)
+                  .toFile(linkDir+'/small_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              }
+            },
+            (callback) => {
+              if (type == 'image') {
+                sharp(saveTo)
+                  .resize(170, 125)
+                  .toFile(linkDir+'/mini_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              }
+            }
+          ], (err, returnres) => {
+            if (err) return res.status(400).send({ success: false, message: err });
 
-          if (length == key) {
+            if (length == key) {
 
-            UserLenta.create({
-              user_id: userId,
-              text: text,
-              src: fullLink,
-            })
-            .then((lenta) => {
-              const lentaId = lenta.dataValues.id;
+              UserLenta.create({
+                user_id: userId,
+                text: text,
+                src: fullLink,
+              })
+              .then((lenta) => {
+                const lentaId = lenta.dataValues.id;
 
-              imgArray.map(item => {
-                item.lenta_id = lentaId;
+                imgArray.map(item => {
+                  item.lenta_id = lentaId;
+                })
+
+                LentaFiles.bulkCreate(imgArray)
+                  .then((arr) => {
+                    let result = {
+                      success: true,
+                      message: 'Успешно добавлен',
+                      result: {
+                       id: lentaId,
+                       text: text,
+                       src: fullLink,
+                       date_created: new Date(),
+                       lenta_files: arr,
+                     }
+                    }
+
+                    if (errorMess != '') {
+                      result.success = false;
+                      result.message = errorMess;
+                    }
+
+                    res.json(result)
+
+                  })
               })
 
-              LentaFiles.bulkCreate(imgArray)
-                .then((arr) => {
-                  let result = {
-                    success: true,
-                    message: 'Успешно добавлен',
-                    result: {
-                     id: lentaId,
-                     text: text,
-                     src: fullLink,
-                     date_created: new Date(),
-                     lenta_files: arr,
-                   }
-                  }
+            }
+            key++;
 
-                  if (errorMess != '') {
-                    result.success = false;
-                    result.message = errorMess;
-                  }
-
-                  res.json(result)
-
-                })
-            })
-
-          }
-          key++;
+          }) // END ASYNC PARALLEL
 
         })
 
@@ -203,8 +222,7 @@ api.deleteInLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
         async.parallel([
           (callback) => {
 
-            functions.removeFolder(src);
-            callback(null);
+            rimraf(src, callback);
 
           },
           (callback) => {

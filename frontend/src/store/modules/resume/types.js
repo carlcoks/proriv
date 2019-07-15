@@ -8,6 +8,7 @@ export const CHANGE_EDUCATION_ORDER = 'CHANGE_EDUCATION_ORDER';
 export const SET_STATE = 'SET_STATE';
 
 export const UPDATE_RESUME = 'UPDATE_RESUME';
+export const UPDATE_USERCARD = 'UPDATE_USERCARD';
 
 export const ADD_JOB = 'ADD_JOB';
 export const UPDATE_JOB = 'UPDATE_JOB';

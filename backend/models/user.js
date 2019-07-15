@@ -23,6 +23,9 @@ module.exports = function(sequelize, Sequelize) {
     user_status_id: {
       type: Sequelize.INTEGER,
     },
+    user_free_id: {
+      type: Sequelize.INTEGER,
+    },
     gender: {
       type: Sequelize.INTEGER,
     },

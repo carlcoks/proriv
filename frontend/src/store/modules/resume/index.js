@@ -8,6 +8,7 @@ const state = {
   resume: null,
   education: [],
   job: [],
+  card: {},
 }
 
 const actions = {
@@ -43,6 +44,10 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.UPDATE_USERCARD](state, payload) {
+    state.card = payload.value;
+  },
+
   [TYPES.UPDATE_RESUME](state, payload) {
     state.resume = payload.value;
   },

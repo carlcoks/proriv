@@ -90,7 +90,13 @@ export default {
   },
   methods: {
     returnAvatar() {
-      return modules.returnAvatarMini(this.profile.gender, this.profile.user_info.src, this.profile.user_info.image);
+      const profile = this.profile;
+      let src, image;
+      if (profile.user_info) {
+        src = profile.user_info.src;
+        image = profile.user_info.image;
+      }
+      return modules.returnAvatarMini(profile.gender, src, image);
     },
 
     returnDate(data) {

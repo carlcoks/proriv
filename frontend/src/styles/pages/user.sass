@@ -67,6 +67,9 @@
           position: relative
           .img
             border-top-right-radius: 5px
+            width: 170px
+            height: 170px
+            background: $white
           .hover
             opacity: 0
             position: absolute
@@ -83,23 +86,55 @@
               opacity: 1
         .statuses
           width: 100%
-          padding: 2px 0 4px
+          padding: 2px 0 3px
           background: $darkblue
           border-bottom-left-radius: 5px
+          position: relative
+          .green
+            color: $lightgreen
+          .red
+            color: $statusred
+          .selected
+            color: $freeactive
+          .open-block
+            position: absolute
+            top: 80%
+            left: 0
+            right: 0
+            height: 0px
+            transition: all .3s
+            overflow: hidden
+            &.active
+              height: 100px
+            &__list
+              display: flex
+              flex-direction: column
+              background: $darkblue
+              padding: 0 10px
+              border-radius: 0 0 5px 5px
+              &-item
+                border-bottom: 1px solid $freeborder
+                &__link
+                  padding: 15px
+                  font-size: .85rem
+                  text-align: center
+                  display: block
+                &:last-child
+                  border-bottom: 0
           &-now
-            cursor: pointer
             font-size: 0.8rem
             text-align: center
             position: relative
-            &:after
-              content: ''
-              position: absolute
-              top: 5px
-              right: 10px
-              border: 6px solid transparent
-              border-top: 6px solid $white
-            &.green
-              color: $lightgreen
+            display: block
+            z-index: 10
+            &.authed
+              &:after
+                content: ''
+                position: absolute
+                top: 5px
+                right: 10px
+                border: 6px solid transparent
+                border-top: 6px solid $white
       &-user
         width: 100%
         padding: 20px 30px 30px

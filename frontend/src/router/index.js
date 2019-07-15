@@ -70,6 +70,14 @@ export function createRouter(store) {
             },
           },
           {
+            path: 'goals/:goal',
+            name: 'user-goal',
+            component: () => import('@/views/components/User/Content/Sportsman/Goals/SingleGoal'),
+            meta: {
+              type: 'tabs',
+            },
+          },
+          {
             path: 'resume',
             name: 'user-resume',
             component: () => import('@/views/components/User/Content/Trener/Resume'),

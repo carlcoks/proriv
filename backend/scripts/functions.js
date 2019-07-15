@@ -3,10 +3,10 @@ const async = require('async'),
       util = require('util'),
       path = require('path');
 
-const readdir = util.promisify(fs.readdir);
-const lstat = util.promisify(fs.lstat);
-const unlink = util.promisify(fs.unlink);
-const rmdir = util.promisify(fs.rmdir);
+// const readdir = util.promisify(fs.readdir);
+// const lstat = util.promisify(fs.lstat);
+// const unlink = util.promisify(fs.unlink);
+// const rmdir = util.promisify(fs.rmdir);
 
 const functions = {};
 
@@ -14,50 +14,47 @@ functions.removeFolder = async (location, next) => {
 
   try {
     let allFiles = [];
-    const files = (await readdir(location)).map(f => path.join(location, f))
-    allFiles.push(...files);
+    const files = await fs.readdir(location);
 
+    files.map(item => {
+      allFiles.push(path.join(location, item));
+    })
 
-      async.each(allFiles, (f, cb) => {
+    async.map(allFiles, (f, cb) => {
+      console.log(f)
 
-        (async() => {
-          try {
-            let file = await lstat(f);
+      fs.lstat(f, (err, file) => {
+        console.log(file)
+        if (err) return cb(err);
 
-            if (file.isDirectory()) {
+        if (file.isDirectory()) {
+          functions.removeFolder(f, cb);
+        } else
+          fs.unlink(f, cb);
+      });
 
-                await functions.removeFolder(f, cb);
+    }, (err) => {
+      if (err) return next(err);
 
-            } else {
+      console.log(location);
 
-                await unlink(f);
-                cb();
-            }
-          } catch(e) {
+      // fs.readdir(location, (err, files) => {
+      //   if (files.length > 0)
+      //     functions.removeFolder(location, next);
+      //   else
+      //     fs.rmdir(location, () => {
+      //       next(null);
+      //     })
+      // })
 
-          }
-
-        })()
-
-
-      }, (err) => {
-        if (err)
-          return err
-          // return next(err);
-
-        (async() => {
-          try {
-            await rmdir(location);
-            // return next();
-          } catch(e) {
-            // return next(e);
-          }
-        })()
-
+      fs.rmdir(location, () => {
+        return next(null);
       })
 
+    })
+
   } catch(e) {
-    // return next(e);
+    return next(e);
   }
 }
 

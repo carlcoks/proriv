@@ -9,7 +9,7 @@ api.getFileUser = () => (req, res) => {
 
   let pathEnd;
 
-  if (req.url.indexOf('/api/public/img') > -1) {
+  if (req.url.indexOf('/api/public/') > -1) {
 
     const url = req.url.replace('/api', '');
     pathEnd = path.resolve(__dirname, `../../${url}`);

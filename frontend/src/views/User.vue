@@ -46,10 +46,41 @@
               </div>
             </div>
             <div
-              class="statuses">
+              class="statuses"
+              @mouseleave="openBlock = false">
+              <a
+                href="/change"
+                class="statuses-now"
+                :class="[user_profile.user_free.id == 1 || user_profile.user_free.id == 3 ? 'green' : 'red', user_profile.id == user.user_id ? 'authed' : '']"
+                @click.prevent="openBlock = !openBlock">
+                {{ user_profile.user_free.name }}
+              </a>
               <div
-                class="statuses-now green">
-                Свободен
+                class="open-block"
+                :class="openBlock ? 'active' : ''">
+                <div
+                  class="open-block__list">
+                  <div
+                    class="open-block__list-item">
+                    <a
+                      href="/change"
+                      @click.prevent="changeFree(1)"
+                      class="open-block__list-item__link green"
+                      :class="user_profile.user_free.id == 1 || user_profile.user_free.id == 3 ? 'selected' : '' ">
+                      {{ user_profile.user_status.id == 1 ? 'Свободен' : 'Ищу тренера' }}
+                    </a>
+                  </div>
+                  <div
+                    class="open-block__list-item">
+                    <a
+                      href="/change"
+                      @click.prevent="changeFree(2)"
+                      class="open-block__list-item__link red"
+                      :class="user_profile.user_free.id == 2 || user_profile.user_free.id == 4 ? 'selected' : '' ">
+                      {{ user_profile.user_status.id == 1 ? 'Занят' : 'Не ищу тренера' }}
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -108,7 +139,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import modules from '@/modules/user';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -134,11 +165,18 @@ export default {
     UserMain,
     UserInfo,
   },
+  data() {
+    return {
+      openBlock: false,
+    }
+  },
   computed: {
     ...mapState('profile', ['user_profile']),
     ...mapState('user', ['user']),
   },
   methods: {
+    ...mapActions('profile', ['updateUser']),
+    ...mapMutations('profile', ['CHANGE_PROFILE']),
     ...mapMutations('layout', ['CHANGE_AVATAR_MODAL']),
 
     getBg() {
@@ -155,6 +193,35 @@ export default {
         }
       }
       return modules.returnAvatar(gender, src, image);
+    },
+
+    changeFree(num) {
+      const status = this.user_profile.user_status.id;
+      let id = 0, name = '';
+      if (status == 1) { // Если тренер
+        if (num == 1) {
+          id = 1;
+          name = 'Свободен';
+        } else {
+          id = 2;
+          name = 'Занят';
+        }
+      } else if (status == 2) { // Если спортсмен
+        if (num == 1) {
+          id = 3;
+          name = 'Ищу тренера';
+        } else {
+          id = 4;
+          name = 'Не ищу тренера';
+        }
+      }
+
+      this.updateUser({
+        user_free_id: id
+      });
+
+      this.CHANGE_PROFILE({user_free: { id, name }});
+      this.openBlock = false;
     },
   }
 }

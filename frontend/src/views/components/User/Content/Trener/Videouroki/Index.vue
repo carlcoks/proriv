@@ -17,6 +17,7 @@
       </div>
 
       <videouroki-list
+        :admin="user.user_id == user_profile.id"
         :data="videokursi" />
 
     </div>

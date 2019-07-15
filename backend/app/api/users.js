@@ -26,6 +26,10 @@ api.signup = (User) => (req, res) => {
 
     let hash = User.generateHash(password);
 
+    let freeId = 0;
+    if (who == 1) freeId = 1;
+    else freeId = 3;
+
     User.findOrCreate({
       where: {
         email: email,
@@ -34,6 +38,7 @@ api.signup = (User) => (req, res) => {
         firstname: firstname,
         lastname: lastname,
         user_status_id: who,
+        user_free_id: freeId,
         gender: gender,
         telefon: telefon,
         password: hash
@@ -162,23 +167,30 @@ api.getSport = (SportType) => (req, res) => {
 }
 
 //Получение пользователя по id
-api.getUser = (User, UserStatus, UserInfo) => (req, res) => {
+api.getUser = (User, UserStatus, UserInfo, UserFree) => (req, res) => {
 
   const userId = req.query.user_id;
 
   User.hasOne(UserStatus, {sourceKey: 'user_status_id', foreignKey: 'id'})
   User.hasOne(UserInfo, {sourceKey: 'id', foreignKey: 'user_id'});
+  User.hasOne(UserFree, {sourceKey: 'user_free_id', foreignKey: 'id'});
 
   User.findOne({
     attributes: ['id', 'email', 'firstname', 'lastname', 'gender', 'telefon', 'date_created'],
     where: {
       id: userId,
     },
-    include: [{
-      model: UserStatus,
-    }, {
-      model: UserInfo,
-    }]
+    include: [
+      {
+        model: UserStatus,
+      },
+      {
+        model: UserInfo,
+      },
+      {
+        model: UserFree,
+      }
+    ]
   })
   .then(user => {
     if (!user) return res.status(400).send({ success: false, message: 'Пользователь не найден' })
@@ -186,6 +198,38 @@ api.getUser = (User, UserStatus, UserInfo) => (req, res) => {
     res.json({ success: true, result: user })
   })
 
+}
+
+// Обновление юзера
+api.updateUser = (User, Token) => (req, res) => {
+  if (Token) {
+
+    const userId = req.body.user_id,
+          data = req.body.data;
+
+    User.findOne({
+      attributes: ['id'],
+      where: {
+        id: userId
+      }
+    })
+    .then(user => {
+      if (!user) return res.status(401).send({ success: false, message: 'Пользователь не найден!' });
+
+      User.update(
+        data,
+      {
+        where: {
+          id: userId,
+        }
+      })
+      .then(() => {
+        res.json({ success: true, message: 'Успешно обновлено' })
+      })
+
+    })
+
+  } else return res.status(403).send({ success: false, message: 'Вы не авторизованы!' });
 }
 
 // Обновление видов спорта пользователя

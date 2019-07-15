@@ -1,9 +1,11 @@
 const UserModel = require('../../models').user;
 const UserInfoModel = require('../../models').user_info;
 const UserStatusModel = require('../../models').user_status;
+const UserFreeModel = require('../../models').user_free;
 const UserBookmarksModel = require('../../models').user_bookmarks;
 
 const UserResumeModel = require('../../models').user_resume;
+const UserGoalsModel = require('../../models').user_goals;
 const UserLentaModel = require('../../models').user_lenta;
 const LentaFilesModel = require('../../models').lenta_files;
 const UserVideokursiModel = require('../../models').user_videokursi;
@@ -26,8 +28,10 @@ const models = {
   User: UserModel,
   UserInfo: UserInfoModel,
   UserStatus: UserStatusModel,
+  UserFree: UserFreeModel,
   UserBookmarks: UserBookmarksModel,
   UserResume: UserResumeModel,
+  UserGoals: UserGoalsModel,
   UserLenta: UserLentaModel,
   LentaFiles: LentaFilesModel,
   UserVideokursi: UserVideokursiModel,

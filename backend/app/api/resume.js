@@ -15,7 +15,8 @@ api.getResume = (UserResume) => (req, res) => {
     let result = {
       about: '',
       education: [],
-      job: []
+      job: [],
+      card: {},
     };
 
     resume.map(item => {

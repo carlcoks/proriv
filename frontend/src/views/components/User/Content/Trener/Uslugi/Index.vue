@@ -18,6 +18,7 @@
 
       </div>
       <button
+        v-if="user.user_id == user_profile.id"
         class="btn addNew"
         @click.prevent="CHANGE_ADD_USLUGA({ bg: true, modal: true })">
         + Добавить услугу
@@ -62,6 +63,7 @@ export default {
   },
   computed: {
     ...mapState(['allsport']),
+    ...mapState('user', ['user']),
     ...mapState('profile', ['user_profile']),
   },
   watch: {

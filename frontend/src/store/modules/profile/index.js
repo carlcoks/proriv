@@ -1,5 +1,6 @@
 import * as TYPES from './types';
 import http from '@/utils/api';
+import Auth from '@/utils/auth';
 
 const namespaced = true;
 
@@ -8,6 +9,21 @@ const state = {
 }
 
 const actions = {
+  async updateUser ({ commit, rootState }, data) {
+    try {
+      const response = await http.put('/api/v1/user', {
+        user_id: Auth.getUserId(rootState),
+        data,
+      }, {
+        headers: {
+          'Authorization': Auth.getAuthenticationHeader(rootState)
+        }
+      })
+    } catch(e) {
+      console.log(e);
+    }
+  },
+
   async getUser({ commit }, data) {
     try {
       const response = await http.get('/api/v1/user', {
