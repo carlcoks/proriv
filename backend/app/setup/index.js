@@ -16,6 +16,8 @@ const UserAlbumsModel = require('../../models').user_albums;
 const UserPhotosModel = require('../../models').user_photos;
 const PhotoCommentsModel = require('../../models').photo_comments;
 
+const UserVideosModel = require('../../models').user_videos;
+
 const UserDialogsModel = require('../../models').user_dialogs;
 const UserMessagesModel = require('../../models').user_messages;
 const UserToDialogModel = require('../../models').user_to_dialog;
@@ -39,6 +41,7 @@ const models = {
   UserAlbums: UserAlbumsModel,
   UserPhotos: UserPhotosModel,
   PhotoComments: PhotoCommentsModel,
+  UserVideos: UserVideosModel,
   UserDialogs: UserDialogsModel,
   UserMessages: UserMessagesModel,
   UserToDialog: UserToDialogModel,

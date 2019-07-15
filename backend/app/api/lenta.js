@@ -12,7 +12,7 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
   if (Token) {
 
     const userId = req.query.user_id;
-    let text, length, imgArray = [], key = 1, errorMess = '';
+    let justtext = false, text, length, imgArray = [], key = 1, errorMess = '';
 
     const lentaDir = 'public/lenta';
 
@@ -33,7 +33,6 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
 
       const busboy = new Busboy({ headers: req.headers });
       busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-
         let type = fieldname.split('_').pop();
 
         const randomStr = crypto.randomBytes(12).toString('hex');
@@ -155,10 +154,36 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
           text = value;
         } else if (fieldname == 'length') {
           length = value;
+        } else if (fieldname == 'justtext') {
+          justtext = value;
         }
       });
 
       busboy.on('finish', function() {
+        if (justtext === true) {
+          UserLenta.create({
+            user_id: userId,
+            text: text,
+            src: fullLink,
+          })
+          .then((lenta) => {
+            const lentaId = lenta.dataValues.id;
+
+            let result = {
+              success: true,
+              message: 'Успешно добавлен',
+              result: {
+               id: lentaId,
+               text: text,
+               src: fullLink,
+               date_created: new Date(),
+               lenta_files: [],
+             }
+            }
+
+            res.json(result)
+          })
+        }
       })
 
       return req.pipe(busboy);

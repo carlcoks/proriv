@@ -143,8 +143,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import ModalLayout from '@/components/Modals/ModalLayout';
 import http from '@/utils/api';
+
+import ModalLayout from '@/components/Modals/ModalLayout';
 
 export default {
   components: {
@@ -180,7 +181,8 @@ export default {
       this.loading = false;
       this.percent = 0;
       this.title = '';
-      this.previews = [];
+      this.desc = '';
+      this.preview = '';
       this.resp = { status: null, mess: '' };
       this.CHANGE_ADD_REWARD_MODAL({ bg: false, modal: false, })
     },
@@ -244,6 +246,7 @@ export default {
         this.resp.mess = response.data.message;
 
         this.$store.dispatch('rewards/getRewards', {user_id: this.$route.params.id});
+        this.$store.dispatch('rewards/getRewardsMain', {user_id: this.$route.params.id})
 
         setTimeout(() => {
           this.close();

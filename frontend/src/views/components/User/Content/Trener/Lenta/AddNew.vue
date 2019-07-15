@@ -120,7 +120,7 @@ export default {
         src = profile.user_profile.src;
         image = profile.user_profile.image;
       }
-      
+
       return modules.returnAvatarMini(profile.gender, src, image);
     },
 
@@ -157,14 +157,20 @@ export default {
         return false;
       }
 
+      let justtext = true;
+
       const form = new FormData();
 
       form.append('text', this.text);
-      form.append('length', this.previews.length);
 
-      this.previews.map((item, i) => {
-        form.append('img'+i+'_'+item.type, item.file);
-      })
+      if (this.previews.length > 0) {
+        form.append('length', this.previews.length);
+        this.previews.map((item, i) => {
+          form.append('img'+i+'_'+item.type, item.file);
+        })
+        justtext = false;
+      }
+      form.append('justtext', justtext);
 
       this.addItem(form);
 

@@ -410,7 +410,7 @@ export default {
 
       this.loading = true;
 
-      const response = await this.addVideourok({data: form, onProgress: this.onProgress});
+      const response = await this.addVideokurs({data: form, onProgress: this.onProgress});
 
       if (response.success) {
         setTimeout(() => {

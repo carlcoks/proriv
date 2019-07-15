@@ -49,6 +49,16 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Photos/Index'),
           },
           {
+            path: 'videos',
+            name: 'user-videos',
+            component: () => import('@/views/components/User/Videos/Index'),
+          },
+          {
+            path: 'videos/:video',
+            name: 'user-video',
+            component: () => import('@/views/components/User/Videos/Single'),
+          },
+          {
             path: 'rewards',
             name: 'user-rewards',
             component: () => import('@/views/components/User/Rewards/Index'),

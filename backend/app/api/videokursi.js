@@ -44,7 +44,7 @@ api.addVideokurs = (User, UserVideokursi, Token) => (req, res) => {
           if (MiMe == 'vnd.openxmlformats-officedocument.wordprocessingml.document') {
             newMime = 'docx';
           } else if (MiMe == 'msword') {
-            newMime = 'doc';plain
+            newMime = 'doc';
           } else if (MiMe == 'plain') {
             newMime = 'txt';
           } else {

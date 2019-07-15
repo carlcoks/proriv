@@ -6,11 +6,13 @@
       class="sidecard-title">
       Видеозаписи
     </div>
-    <div class="sidecard-btns">
-      <button
+    <div
+      class="sidecard-btns">
+      <router-link
+        :to="`/user/${$route.params.id}/videos`"
         class="btn addNew">
         Все видеозаписи
-      </button>
+      </router-link>
     </div>
   </div>
 

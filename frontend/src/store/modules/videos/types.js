@@ -1,0 +1,3 @@
+export const CHANGE_ADD_VIDEO_MODAL = 'CHANGE_ADD_VIDEO_MODAL';
+export const ADD_NEW_VIDEO = 'ADD_NEW_VIDEO';
+export const SET_VIDEOS = 'SET_VIDEOS';

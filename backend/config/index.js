@@ -6,8 +6,8 @@ module.exports = {
   dbProd: {
     host: "localhost",
     port: 3306,
-    dbuser: "admin",
-    dbpass: "",
+    dbuser: "fitlance",
+    dbpass: "W0u9W1i1",
     dbname: "fitlance"
   },
   dbDev: {

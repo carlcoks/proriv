@@ -9,12 +9,12 @@
         v-show="showArrows"
         class="slider-arrows">
         <button
-          class="btn swiper-prev">
+          class="btn swiper-rewards-prev">
           <img
             src="/img/icons/slide-left.png">
         </button>
         <button
-          class="btn swiper-next">
+          class="btn swiper-rewards-next">
           <img
             src="/img/icons/slide-right.png">
         </button>
@@ -63,8 +63,8 @@ export default {
       showArrows: false,
       swiperOption: {
         navigation: {
-          nextEl: '.swiper-next',
-          prevEl: '.swiper-prev',
+          nextEl: '.swiper-rewards-next',
+          prevEl: '.swiper-rewards-prev',
         },
         init: true,
       }

@@ -27,7 +27,8 @@ const actions = {
     try {
       const response = await http.post('/api/v1/lenta', data, {
         headers: {
-          'Authorization': Auth.getAuthenticationHeader(rootState)
+          'Authorization': Auth.getAuthenticationHeader(rootState),
+          'Content-Type': 'multipart/form-data',
         },
         params: {
           user_id: Auth.getUserId(rootState),

@@ -48,8 +48,12 @@ const mutations = {
     if (payload) {
 
       if (payload.user_info) {
-        for (let key in payload.user_info) {
-          state.user_profile.user_info[key] = payload.user_info[key];
+        if (state.user_profile.user_info) {
+          for (let key in payload.user_info) {
+            state.user_profile.user_info[key] = payload.user_info[key];
+          }
+        } else {
+          state.user_profile.user_info = payload.user_info;
         }
       } else {
         for (let key in payload) {

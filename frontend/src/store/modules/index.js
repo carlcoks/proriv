@@ -2,9 +2,10 @@ import user from './user';
 import layout from './layout';
 
 import profile from './profile';
+import rewards from './rewards';
 import albums from './albums';
 import photos from './photos';
-import rewards from './rewards';
+import videos from './videos';
 
 import messages from './messages';
 
@@ -21,9 +22,10 @@ export {
   user,
   layout,
   profile,
+  rewards,
   albums,
   photos,
-  rewards,
+  videos,
   messages,
   resume,
   lenta,
