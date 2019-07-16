@@ -66,14 +66,18 @@
           </div>
         </div>
 
-        <div
+        <transition-group
+          tag="div"
+          name="slideMove"
           class="bookmarks-content">
 
           <trener-card
-            v-for="(item, i) in treners" :key="i"
-            :item="item" />
+            v-for="(item, i) in bookmarks" :key="item.id"
+            :item="item.user"
+            :bookmark="true"
+            @bookmark="bookmark($event, i)" />
 
-        </div>
+        </transition-group>
 
       </div>
 
@@ -84,18 +88,32 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 import Breadcrumbs from '@/components/Breadcrumbs';
 import TrenerCard from '@/components/Cards/TrenerCard';
 
 export default {
+  asyncData ({ store, route }) {
+    return store.dispatch('bookmarks/getBookmarks');
+  },
   components: {
     Breadcrumbs,
     TrenerCard,
   },
-  data() {
-    return {
-      treners: [],
-    }
+  computed: {
+    ...mapState('bookmarks', ['bookmarks']),
+  },
+  methods: {
+    ...mapActions('bookmarks', ['deleteBookmark']),
+
+    bookmark(data, num) {
+      const array = {
+        bookmark_user: data.id,
+        num: num,
+      };
+      this.deleteBookmark(array);
+    },
   }
 }
 </script>

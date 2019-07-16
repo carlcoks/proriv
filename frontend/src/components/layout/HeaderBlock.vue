@@ -89,7 +89,7 @@
           </a>
 
           <transition
-            name="slideTop">
+            name="slideTopBlock">
             <div
               v-if="showMenu"
               class="user-menu">

@@ -18,6 +18,9 @@ import goals from './goals';
 // Поиск тренера
 import treners from './treners';
 
+//Закладки
+import bookmarks from './bookmarks';
+
 export {
   user,
   layout,
@@ -33,4 +36,5 @@ export {
   uslugi,
   goals,
   treners,
+  bookmarks,
 }

@@ -23,7 +23,7 @@
   display: inline-flex
   align-items: center
   background: $white
-  transition: background .3
+  transition: background .3, color .3s
   img
     margin-right: 10px
   &:hover
@@ -32,6 +32,9 @@
     background: #dce6ed80
   &.disabled
     background: $labelgrey
+  &.bookmarkDel
+    background: $trenersfilter
+    color: $white
 
 //Изменить аватар
 .changeBtn

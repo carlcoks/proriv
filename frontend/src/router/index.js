@@ -164,6 +164,9 @@ export function createRouter(store) {
         path: '/bookmarks',
         name: 'bookmarks',
         component: () => import('@/views/Bookmarks'),
+        meta: {
+          requiredAuth: true,
+        },
       },
       {
         path: '/im',

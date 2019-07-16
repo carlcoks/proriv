@@ -30,7 +30,8 @@
 
             <trener-card
               v-for="(item, i) in filterTreners" :key="item.id"
-              :item="item" />
+              :item="item"
+              @bookmark="bookmark($event, i)" />
 
           </transition-group>
 
@@ -45,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import FilterBlock from './components/Treners/Filter';
@@ -63,11 +64,20 @@ export default {
     TrenerCard,
   },
   computed: {
+    ...mapState('user', ['user']),
     ...mapState('treners', ['treners', 'sort', 'filter']),
     filterTreners() {
       let treners = Object.cloneDeep(this.treners);
 
       treners = treners.filter(item => {
+
+        if (this.filter.name != '') {
+          const fullName = item.firstname + ' ' + item.lastname;
+          if (fullName.indexOf(this.filter.name) > -1)
+            return item
+          else
+            return
+        }
 
         if (this.filter.sport != '') {
           if (item.user_info) {
@@ -108,6 +118,21 @@ export default {
     }
   },
   methods: {
+    ...mapActions('treners', ['addBookmark', 'deleteBookmark']),
+
+    bookmark(data, num) {
+      if (this.user.user_id) {
+        const array = {
+          bookmark_user: data.id,
+          num: num,
+        };
+        if (data.type == 'add')
+          this.addBookmark(array);
+        else if (data.type == 'delete')
+          this.deleteBookmark(array);
+      }
+    },
+
     sortByNameAsc(d1, d2) {
       return (d1.firstname.toLowerCase() > d2.firstname.toLowerCase()) ? 1 : -1;
     },

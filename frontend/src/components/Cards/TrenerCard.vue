@@ -18,7 +18,6 @@
     </div>
     <div
       class="trener-card__info">
-
       <router-link
         :to="`/user/${item.id}`"
         class="trener-card__info-title">
@@ -27,10 +26,18 @@
       <div
         class="trener-card__info-btn">
         <button
-          class="btn addNew">
+          v-if="!item.user_bookmark && !bookmark"
+          class="btn addNew"
+          @click.prevent="$emit('bookmark', {id: item.id, type: 'add'})">
           <img
             src="/img/icons/bookmark_add.png">
           В закладки
+        </button>
+        <button
+          v-else
+          class="btn addNew bookmarkDel"
+          @click.prevent="$emit('bookmark', {id: item.id, type: 'delete'})">
+          Убрать из закладок
         </button>
       </div>
       <div
@@ -48,7 +55,7 @@
 import modules from '@/modules/user';
 
 export default {
-  props: ['item'],
+  props: ['item', 'bookmark'],
   methods: {
     returnAvatar() {
       const profile = this.item;

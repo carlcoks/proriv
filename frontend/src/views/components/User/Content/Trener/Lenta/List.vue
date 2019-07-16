@@ -33,7 +33,7 @@
         </button>
 
         <transition
-          name="slideTop">
+          name="slideTopBlock">
           <div
             v-if="showEdit"
             class="edit-list">
