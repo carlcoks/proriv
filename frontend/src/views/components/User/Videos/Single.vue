@@ -1,7 +1,7 @@
 <template>
 
   <div
-    v-if="photo">
+    v-if="single">
 
     <modal-layout
       :bgShow="true"
@@ -11,13 +11,21 @@
       <div
         class="modalBlock video-page no-pad">
         <div
-          class="video-page__img">
-          <img
-            class="image"
-            :src="`/api/${photo.single.src}/${photo.single.image}`">
+          class="video-page__video">
+          <video
+            v-if="single.src && single.video"
+            class="video"
+            :src="`/api/${single.src}/${single.video}`"
+            controls
+            preload="auto"></video>
+          <iframe
+            v-if="single.link"
+            class="iframe"
+            :src="returnLink(single.link)"
+            frameborder="0"></iframe>
         </div>
         <div
-          class="photo-page__about">
+          class="video-page__about">
           <div
             class="user-info">
             <img
@@ -31,7 +39,7 @@
               </div>
               <div
                 class="user-info__block-date">
-                {{ returnDate(photo.single.date_created) }}
+                {{ returnDate(single.date_created) }}
               </div>
             </div>
           </div>
@@ -40,7 +48,7 @@
             <div
               v-if="!edit"
               class="about-info__text">
-              {{ photo.single.about }}
+              {{ single.about }}
             </div>
             <div
               v-else
@@ -68,7 +76,7 @@
               href="/edit"
               class="edit"
               title="Редактировать описание"
-              @click.prevent="edit = true, editText = photo.about">
+              @click.prevent="edit = true, editText = single.about">
               <img
                 src="/img/icons/edit.png">
             </a>
@@ -88,9 +96,9 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import modules from '@/modules/user';
-import http from '@/utils/api';
+import functions from '@/modules/functions';
 
 import ModalLayout from '@/components/Modals/ModalLayout';
 // import CommentsBlock from './CommentsBlock';
@@ -98,7 +106,7 @@ import ModalLayout from '@/components/Modals/ModalLayout';
 export default {
   name: 'user-video',
   asyncData({ store, route }) {
-    // return store.dispatch('photos/getPhoto', { user_id: route.params.id, photo_id: route.params.photo });
+    return store.dispatch('videos/getVideo', { user_id: route.params.id, id: route.params.video });
   },
   components: {
     ModalLayout,
@@ -113,35 +121,26 @@ export default {
   computed: {
     ...mapState('profile', ['user_profile']),
     ...mapState('user', ['user']),
-    ...mapState('photos', ['photo']),
+    ...mapState('videos', ['single']),
   },
   methods: {
-    ...mapMutations('photos', ['CHANGE_PHOTO']),
+    ...mapActions('videos', ['updateVideo']),
 
     async saveAbout() {
       const data = {
         about: this.editText,
       };
 
-      try {
-        const response = await http.put('/api/v1/photo', {
-          user_id: this.user.user_id,
-          photo_id: this.photo.id,
-          data,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${this.user.token}`
-          }
-        })
+      const response = await this.updateVideo({data: data, id: this.$route.params.video});
 
-        if (response.data.success)
-          this.CHANGE_PHOTO({ single: { about: this.editText } });
-
+      if (response.success) {
         this.edit = false;
         this.editText = '';
-      } catch(e) {
-        console.log(e);
       }
+    },
+
+    returnLink(link) {
+      return functions.returnVideoLink(link);
     },
 
     close() {

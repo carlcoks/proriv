@@ -21,6 +21,9 @@ module.exports = function(sequelize, Sequelize) {
     link: {
       type: Sequelize.STRING,
     },
+    about: {
+      type: Sequelize.STRING,
+    },
     date_created: {
       type: Sequelize.DATE,
     },

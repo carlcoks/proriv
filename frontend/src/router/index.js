@@ -126,14 +126,14 @@ export function createRouter(store) {
                   type: 'tabs',
                 },
               },
-              // {
-              //   path: '/',
-              //   name: 'user-videouroki',
-              //   component: () => import('@/views/components/User/Content/Trener/Videouroki/Index'),
-              //   meta: {
-              //     type: 'tabs',
-              //   },
-              // }
+              {
+                path: ':urok',
+                name: 'user-videourok',
+                component: () => import('@/views/components/User/Content/Trener/Videouroki/Single'),
+                meta: {
+                  type: 'tabs',
+                },
+              }
             ]
           },
           {

@@ -21,7 +21,7 @@
             <button-block
               :title="`Сменить изображение`"
               :className="`changeBtn`"
-              @clicked="" />
+              @clicked="CHANGE_BG_MODAL({ bg: true, modal: true })" />
           </div>
           <div
             class="bg-shadow"></div>
@@ -126,6 +126,7 @@
       v-if="user.user_id == user_profile.id">
 
       <change-avatar />
+      <change-bg />
       <change-contacts />
       <change-sport />
 
@@ -145,6 +146,7 @@ import modules from '@/modules/user';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import ButtonBlock from '@/components/ButtonBlock';
 import ChangeAvatar from '@/components/Modals/Profile/ChangeAvatar';
+import ChangeBg from '@/components/Modals/Profile/ChangeBg';
 import ChangeContacts from '@/components/Modals/Profile/ChangeContacts';
 import ChangeSport from '@/components/Modals/Profile/ChangeSport';
 
@@ -160,6 +162,7 @@ export default {
     Breadcrumbs,
     ButtonBlock,
     ChangeAvatar,
+    ChangeBg,
     ChangeContacts,
     ChangeSport,
     UserMain,
@@ -177,10 +180,15 @@ export default {
   methods: {
     ...mapActions('profile', ['updateUser']),
     ...mapMutations('profile', ['CHANGE_PROFILE']),
-    ...mapMutations('layout', ['CHANGE_AVATAR_MODAL']),
+    ...mapMutations('layout', ['CHANGE_AVATAR_MODAL', 'CHANGE_BG_MODAL']),
 
     getBg() {
-      return modules.getUserBg();
+      let src, image;
+      if (this.user_profile && this.user_profile.user_info) {
+        src = this.user_profile.user_info.src;
+        image = this.user_profile.user_info.bg_image;
+      }
+      return modules.getUserBg(src, image);
     },
 
     getAvatar() {

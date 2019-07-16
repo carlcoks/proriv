@@ -379,9 +379,9 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
       if (user.dataValues.user_info) {
         if (user.dataValues.user_info.src) {
           fullLink = user.dataValues.user_info.src;
-          fs.readdir(fullLink, (err, files) => {
+          fs.readdir(fullLink+'/avatar', (err, files) => {
             for (let key in files) {
-              fs.unlink(`${fullLink}/${files[key]}`, (err) => {});
+              fs.unlink(`${fullLink}/avatar/${files[key]}`, (err) => {});
             }
           })
         }
@@ -389,6 +389,7 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
 
       if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir);
       if (!fs.existsSync(fullLink)) fs.mkdirSync(fullLink);
+      if (!fs.existsSync(fullLink+'/avatar')) fs.mkdirSync(fullLink+'/avatar');
 
       const busboy = new Busboy({ headers: req.headers });
       busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
@@ -397,7 +398,7 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
         let MiMe = mimetype.split("/").pop(); // берём расширение
         let fileName = newFileName+'.'+MiMe; // новое имя файла с расширением
 
-        let saveTo = path.join(fullLink, fileName);
+        let saveTo = path.join(fullLink+'/avatar', fileName);
         file.pipe(fs.createWriteStream(saveTo));
 
         file.on('end', function() {
@@ -406,7 +407,7 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
             (callback) => {
               sharp(saveTo)
                 .resize(40, 40)
-                .toFile(fullLink+'/mini_'+fileName, (err, info) => {
+                .toFile(fullLink+'/avatar'+'/mini_'+fileName, (err, info) => {
                   if (err)
                     errorMess = 'Фотография имеет не поддерживаемый формат';
                   callback(null);
@@ -415,10 +416,10 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
             (callback) => {
               sharp(saveTo)
                 .resize(170, 170)
-                .toFile(fullLink+'/cover_'+fileName, (err, info) => {
+                .toFile(fullLink+'/avatar'+'/cover_'+fileName, (err, info) => {
                   if (err)
                     errorMess = 'Фотография имеет не поддерживаемый формат';
-                  fs.unlink(fullLink+'/'+fileName, (err) => {
+                  fs.unlink(fullLink+'/avatar'+'/'+fileName, (err) => {
                     callback(null);
                   })
                 });
@@ -429,6 +430,125 @@ api.updateUserAvatar = (User, UserInfo, Token) => (req, res) => {
             const data = {
               src: fullLink,
               image: fileName,
+            }
+
+            UserInfo.findOne({
+              attributes: ['id'],
+              where: {
+                user_id: userId,
+              }
+            })
+            .then((obj) => {
+              if (obj) {
+                obj.update(data);
+              }
+              else {
+                UserInfo.create({
+                  user_id: userId,
+                  ...data
+                })
+              }
+
+              let result = {
+                success: true,
+                message: 'Фотография успешно обновлена'
+              }
+              if (errorMess != '') {
+                result.success = false;
+                result.message = errorMess;
+              }
+
+              res.json({ success: result.success, message: result.message, data })
+            })
+
+          })
+
+        })
+
+      })
+
+      busboy.on('field', function(fieldname, value){});
+
+      busboy.on('finish', function() {})
+
+      return req.pipe(busboy);
+
+    })
+
+  } else return res.status(403).send({ success: false, message: 'Вы не авторизованы!' });
+}
+
+api.updateUserBg = (User, UserInfo, Token) => (req, res) => {
+  if (Token) {
+
+    const userId = req.query.user_id;
+    const usersDir = 'public/users';
+    let errorMess = '';
+
+    const timeStamp = Date.now();
+    const randomStr = crypto.randomBytes(4).toString('hex');
+    let fullLink = usersDir+'/'+timeStamp+''+userId+''+randomStr;
+
+    User.hasOne(UserInfo, {sourceKey: 'id', foreignKey: 'user_id'});
+
+    User.findOne({
+      attributes: ['id'],
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: UserInfo,
+          attributes: ['src', 'image'],
+        }
+      ]
+    })
+    .then(user => {
+      if (!user) return res.status(401).send({ success: false, message: 'Пользователь не найден!' });
+
+      if (user.dataValues.user_info) {
+        if (user.dataValues.user_info.src) {
+          fullLink = user.dataValues.user_info.src;
+          fs.readdir(fullLink+'/bg', (err, files) => {
+            for (let key in files) {
+              fs.unlink(`${fullLink}/bg/${files[key]}`, (err) => {});
+            }
+          })
+        }
+      }
+
+      if (!fs.existsSync(usersDir)) fs.mkdirSync(usersDir);
+      if (!fs.existsSync(fullLink)) fs.mkdirSync(fullLink);
+      if (!fs.existsSync(fullLink+'/bg')) fs.mkdirSync(fullLink+'/bg');
+
+      const busboy = new Busboy({ headers: req.headers });
+      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+        let newFileName = crypto.randomBytes(12).toString('hex'); // создаём случайное имя файла без расширения
+        let MiMe = mimetype.split("/").pop(); // берём расширение
+        let fileName = newFileName+'.'+MiMe; // новое имя файла с расширением
+
+        let saveTo = path.join(fullLink+'/bg', fileName);
+        file.pipe(fs.createWriteStream(saveTo));
+
+        file.on('end', function() {
+
+          async.parallel([
+            (callback) => {
+              sharp(saveTo)
+                .resize(1170, 360)
+                .toFile(fullLink+'/bg'+'/crop_'+fileName, (err, info) => {
+                  if (err)
+                    return callback('Фотография имеет не поддерживаемый формат');
+                  callback(null);
+                });
+            },
+          ], (err, result) => {
+            if (err) return res.status(400).send({ success: false, message: err })
+
+            const data = {
+              src: fullLink,
+              bg_image: fileName,
             }
 
             UserInfo.findOne({

@@ -8,7 +8,7 @@
       href="/add"
       title="Добавить курс"
       class="videouroki-list__item add-item"
-      @click.prevent="CHANGE_ADD_KURS({ bg: true, modal: true })">
+      @click.prevent="CHANGE_ADD_UROK({ bg: true, modal: true })">
       <div
         class="add-item__btn">
         <img
@@ -23,7 +23,7 @@
     <router-link
       class="videouroki-list__item"
       v-for="(item, i) in data" :key="i"
-      :to="`/user/${$route.params.id}/videouroki/kursi/${item.id}`">
+      :to="`/user/${$route.params.id}/videouroki/${item.id}`">
       <div
         class="item-image"
         :style="`background-image: url(/api/${item.src}/cover_${item.image})`">
@@ -51,7 +51,7 @@ import { mapMutations } from 'vuex';
 export default {
   props: ['admin', 'data'],
   methods: {
-    ...mapMutations('videouroki', ['CHANGE_ADD_KURS']),
+    ...mapMutations('videouroki', ['CHANGE_ADD_UROK']),
   }
 }
 </script>

@@ -127,4 +127,73 @@ api.getVideos = (UserVideos) => (req, res) => {
 
 }
 
+//Взять 1 видео пользоветля по id
+api.getVideo = (UserVideos) => (req, res) => {
+
+  const userId = req.query.user_id,
+        id = req.query.id;
+
+  UserVideos.findOne({
+    attributes: ['id', 'title', 'src', 'video', 'link', 'about', 'date_created'],
+    where: {
+      id: id,
+      user_id: userId,
+    },
+  })
+  .then((video) => {
+    res.json({ success: true, result: video });
+  })
+
+}
+
+//Обновить видео
+api.updateVideo = (User, UserVideos, Token) => (req, res) => {
+  if (Token) {
+
+    const userId = req.body.user_id,
+          id = req.body.id,
+          data = req.body.data;
+
+    User.findOne({
+      attributes: ['id'],
+      where: {
+        id: userId
+      }
+    })
+    .then(user => {
+      if (!user) return res.status(401).send({ success: false, message: 'Пользователь не найден!' });
+
+      UserVideos.update(data, {
+        where: {
+          id: id,
+          user_id: userId,
+        }
+      })
+      .then(() => {
+        res.json({ success: true, message: 'Успешно обновлено', })
+      })
+
+    })
+
+  } else return res.status(403).send({ success: false, message: 'Вы не авторизованы!' });
+}
+
+// Взять видео для главной
+api.getVideosMain = (UserVideos) => (req, res) => {
+
+  const userId = req.query.user_id;
+
+  UserVideos.findAll({
+    attributes: ['id', 'title', 'src', 'video', 'link'],
+    where: {
+      user_id: userId,
+    },
+    order: [['date_created', 'DESC']],
+  })
+  .then((videos) => {
+    res.json({ success: true, result: videos });
+  })
+
+}
+
 module.exports = api;

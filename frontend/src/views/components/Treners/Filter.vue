@@ -95,7 +95,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      showSport: true,
+      showSport: false,
       name: '',
       sport: '',
       country: '',

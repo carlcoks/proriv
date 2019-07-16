@@ -11,9 +11,11 @@
         :src="`/api/${item.src}/${item.video}`"
         preload="auto"
         muted="muted"></video>
-      <iframe
-        v-if="item.link"
-        :src="item.link" frameborder="0"></iframe>
+      <div
+        v-else
+        class="itemCard-video__cover"
+        v-html="returnBlock(item.link)">
+      </div>
       <span
         class="play">
         <img
@@ -32,8 +34,15 @@
 </template>
 
 <script>
+import functions from '@/modules/functions';
+
 export default {
-  props: ['link', 'item']
+  props: ['link', 'item'],
+  methods: {
+    returnBlock(link) {
+      return functions.returnVideoBlock(link, 'small');
+    },
+  }
 }
 </script>
 

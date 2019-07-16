@@ -28,6 +28,9 @@ module.exports = (app) => {
   app.route('/api/v1/user-avatar')
     .post(passport.authenticate('jwt', config.session), api.updateUserAvatar(models.User, models.UserInfo, app.get('secretpass')))
 
+  app.route('/api/v1/user-bg')
+    .post(passport.authenticate('jwt', config.session), api.updateUserBg(models.User, models.UserInfo, app.get('secretpass')))
+
   app.route('/api/v1/user-contacts')
     .put(passport.authenticate('jwt', config.session), api.updateUserContacts(models.User, app.get('secretpass')))
 }

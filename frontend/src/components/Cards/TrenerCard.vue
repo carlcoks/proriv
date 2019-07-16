@@ -18,7 +18,7 @@
     </div>
     <div
       class="trener-card__info">
- 
+
       <router-link
         :to="`/user/${item.id}`"
         class="trener-card__info-title">
@@ -61,7 +61,13 @@ export default {
     },
 
     returnBg() {
-      return modules.getUserBg();
+      const profile = this.item;
+      let src, image;
+      if (profile && profile.user_info) {
+        src = profile.user_info.src;
+        image = profile.user_info.bg_image;
+      }
+      return modules.getUserBg(src, image);
     },
   }
 }

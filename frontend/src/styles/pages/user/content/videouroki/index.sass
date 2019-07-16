@@ -52,42 +52,46 @@
           background-size: cover
           background-position: 50%
           position: relative
-          border-radius: 5px
-          &:after
-            content: ''
-            position: absolute
-            top: 0
-            left: 0
-            bottom: 0
-            right: 0
-            background: linear-gradient( 0deg, rgb(62,65,86) 0%, rgba(62,65,86,0.50196) 100%)
-            z-index: 1
-            border-top-left-radius: 5px
-            border-top-right-radius: 5px
+          border-radius: 5px 5px 0 0
+          &.item-kurs
+            &:after
+              content: ''
+              position: absolute
+              top: 0
+              left: 0
+              bottom: 0
+              right: 0
+              background: linear-gradient( 0deg, rgb(62,65,86) 0%, rgba(62,65,86,0.50196) 100%)
+              z-index: 1
+              border-top-left-radius: 5px
+              border-top-right-radius: 5px
         &-about
           position: absolute
           bottom: 0
           left: 0
           right: 0
           padding: 0 15px 15px
-          background: $darkblue
+          background: $white
+          color: $black
           height: 110px
           z-index: 1
           border-bottom-left-radius: 5px
           border-bottom-right-radius: 5px
+          &.item-kurs
+            background: $darkblue
+            color: $white
           &__title
-            height: 60px
+            height: 65px
             text-overflow: ellipsis
             -webkit-line-clamp: 3
             -webkit-box-orient: vertical
             display: -webkit-box
             overflow: hidden
             line-height: 20px
-            color: $white
-            margin-bottom: 15px
+            margin-bottom: 10px
+            padding-top: 10px
           &__price
             line-height: 20px
-            color: $white
             font-family: 'ClearSans-Bold'
       &:hover
         top: -10px

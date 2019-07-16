@@ -129,6 +129,11 @@
                   v-model.trim="link"
                   :disabled="video != '' ? true : false"
                   placeholder="Ссылка на видео" />
+                <span
+                  v-if="errors.link"
+                  class="error-mess">
+                  {{ errors.link }}
+                </span>
               </div>
             </div>
           </div>
@@ -162,6 +167,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import functions from '@/modules/functions';
 
 import ModalLayout from '@/components/Modals/ModalLayout';
 
@@ -183,6 +189,7 @@ export default {
       errors: {
         title: '',
         video: '',
+        link: '',
       }
     }
   },
@@ -196,6 +203,7 @@ export default {
     },
     link() {
       this.errors.video = '';
+      this.errors.link = '';
     },
     previews() {
       this.resp.status = null;
@@ -213,7 +221,7 @@ export default {
       this.video = '';
       this.link = '';
       this.resp = { status: null, mess: '' };
-      this.errors = { title: '', video: '' };
+      this.errors = { title: '', video: '', link: '' };
       this.CHANGE_ADD_VIDEO_MODAL({ bg: false, modal: false, })
     },
 
@@ -239,6 +247,18 @@ export default {
         return false
       }
 
+      if (this.link != '') {
+        if (functions.isValidUrl(this.link)) {
+          if (this.link.indexOf('youtube.com') == -1 && this.link.indexOf('youtu.be') == -1) {
+            this.errors.link = 'Некорректная ссылка';
+            return false;
+          }
+        } else {
+          this.errors.link = 'Некорректная ссылка';
+          return false;
+        }
+      }
+
       const form = new FormData();
 
       form.append('title', this.title);
@@ -251,13 +271,15 @@ export default {
       this.loading = true;
       const response = await this.addNewVideo({ data: form, onProgress: this.onProgress });
 
+      this.$store.dispatch('videos/getVideosMain', {user_id: this.$route.params.id})
+
+      this.resp.status = response.success;
+      this.resp.mess = response.message;
+
       if (response.success)
         setTimeout(() => {
           this.close();
         }, 2000)
-
-      this.resp.status = response.success;
-      this.resp.mess = response.message;
     },
 
     onProgress(progress) {
