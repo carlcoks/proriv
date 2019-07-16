@@ -40,7 +40,15 @@
             <div
               v-if="!edit"
               class="about-info__text">
-              {{ photo.single.about }}
+              <div
+                v-if="photo.single.about">
+                {{ photo.single.about }}
+              </div>
+              <div
+                v-else-if="user && user.user_id == user_profile.id"
+                class="description">
+                Здесь будет описание к фото
+              </div>
             </div>
             <div
               v-else
@@ -126,7 +134,7 @@ export default {
       try {
         const response = await http.put('/api/v1/photo', {
           user_id: this.user.user_id,
-          photo_id: this.photo.id,
+          photo_id: this.$route.params.photo,
           data,
         }, {
           headers: {

@@ -12,7 +12,7 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
   if (Token) {
 
     const userId = req.query.user_id;
-    let justtext = false, text, length, imgArray = [], key = 1, errorMess = '';
+    let justtext = 0, text, length, imgArray = [], key = 1, errorMess = '';
 
     const lentaDir = 'public/lenta';
 
@@ -160,7 +160,7 @@ api.addToLenta = (User, UserLenta, LentaFiles, Token) => (req, res) => {
       });
 
       busboy.on('finish', function() {
-        if (justtext === true) {
+        if (justtext == 1) {
           UserLenta.create({
             user_id: userId,
             text: text,
@@ -201,6 +201,9 @@ api.getLenta = (UserLenta, LentaFiles) => (req, res) => {
 
   UserLenta.findAll({
     attributes: ['id', 'text', 'src', 'date_created'],
+    where: {
+      user_id: userId,
+    },
     order: [['date_created', 'DESC']],
     include: [
       {

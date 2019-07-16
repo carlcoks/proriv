@@ -9,7 +9,11 @@
       class="modalBlock changePhoto change-avatar">
       <div
         class="modalBlock-title">
-        {{ status == null ? 'Загрузка новой фотографии' : status == 'crop' ? 'Обрезка фотографии' : '' }}
+        {{
+          status == null ? 'Загрузка нового фона' :
+          status == 'loading' ? 'Идёт загрузка' :
+          status == 'crop' ? 'Обрезка фотографии' : ''
+        }}
       </div>
       <div
         v-if="status == 'crop'"

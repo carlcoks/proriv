@@ -29,6 +29,9 @@ import AddNew from './Lenta/AddNew';
 import ListItem from './Lenta/List';
 
 export default {
+  asyncData ({ store, route }) {
+    return store.dispatch('lenta/getLenta', { user_id: route.params.id })
+  },
   components: {
     AddNew,
     ListItem,
@@ -38,11 +41,8 @@ export default {
     ...mapState('user', ['user']),
     ...mapState('profile', ['user_profile']),
   },
-  created() {
-    this.getLenta({ user_id: this.$route.params.id });
-  },
   methods: {
-    ...mapActions('lenta', ['getLenta', 'deleteInLenta']),
+    ...mapActions('lenta', ['deleteInLenta']),
 
     deleteItem(e, id) {
       this.deleteInLenta({id});

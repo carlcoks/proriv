@@ -48,7 +48,15 @@
             <div
               v-if="!edit"
               class="about-info__text">
-              {{ single.about }}
+              <div
+                v-if="single.about">
+                {{ single.about }}
+              </div>
+              <div
+                v-else-if="user && user.user_id == user_profile.id"
+                class="description">
+                Здесь будет описание к видео
+              </div>
             </div>
             <div
               v-else

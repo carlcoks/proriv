@@ -67,8 +67,8 @@ const mutations = {
 
   [TYPES.CHANGE_PHOTO](state, payload) {
     if (payload) {
-      for (let key in payload) {
-        state.photo[key] = payload[key];
+      for (let key in payload.single) {
+        state.photo.single[key] = payload[key];
       }
     }
   },

@@ -12,7 +12,8 @@
         {{
           status == null ? 'Загрузка нового фона' :
           status == 'loading' ? 'Идёт загрузка' :
-          status == 'crop' ? 'Обрезка фотографии' : '' }}
+          status == 'crop' ? 'Обрезка фотографии' : ''
+        }}
       </div>
       <div
         v-if="status == 'crop'"

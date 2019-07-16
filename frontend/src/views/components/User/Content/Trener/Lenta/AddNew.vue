@@ -157,7 +157,7 @@ export default {
         return false;
       }
 
-      let justtext = true;
+      let justtext = 1;
 
       const form = new FormData();
 
@@ -168,7 +168,7 @@ export default {
         this.previews.map((item, i) => {
           form.append('img'+i+'_'+item.type, item.file);
         })
-        justtext = false;
+        justtext = 0;
       }
       form.append('justtext', justtext);
 
