@@ -38,6 +38,10 @@ import GoalsItem from './Goals/GoalsItem';
 import AddGoal from '@/components/Modals/User/Goals/AddGoal';
 
 export default {
+  name: 'user-goals',
+  initialMutations: [
+    'goals/RESET_GOALS',
+  ],
   asyncData ({ store, route }) {
     return store.dispatch('goals/getGoals', { user_id: route.params.id });
   },

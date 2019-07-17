@@ -40,6 +40,10 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.RESET_PROFILE](state, payload) {
+    state.user_profile = null;
+  },
+
   [TYPES.SET_PROFILE](state, payload) {
     state.user_profile = payload;
   },

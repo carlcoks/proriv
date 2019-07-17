@@ -24,7 +24,7 @@
         :admin="user_profile.id == user.user_id" />
 
     </div>
-    
+
     <div
       class="resume-block">
       <div
@@ -51,7 +51,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import http from '@/utils/api';
 import educationModel from '@/models/model-education';
 
 import ButtonBlock from '@/components/ButtonBlock';
@@ -60,6 +59,9 @@ import EducationBlock from './Resume/Education';
 import JobBlock from './Resume/Job';
 
 export default {
+  initialMutations: [
+    'resume/RESET_RESUME',
+  ],
   asyncData ({ store, route }, data) {
     return store.dispatch('resume/getResume', { user_id: route.params.id });
   },

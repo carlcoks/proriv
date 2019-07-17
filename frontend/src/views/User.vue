@@ -99,10 +99,12 @@
             </div>
             <div
               class="info-user__bot">
-              <button-block
+              <router-link
                 v-if="user.user_id != user_profile.id"
-                :title="`Написать сообщение`"
-                :className="`infoBtn`" />
+                :to="`/im?sel=${user_profile.id}`"
+                class="infoBtn">
+                Написать сообщение
+              </router-link>
               <button-block
                 v-if="user.auth && user.user_id == user_profile.id"
                 :title="`Редактировать профиль`"
@@ -156,6 +158,10 @@ import UserInfo from './components/User/UserInfo';
 export default {
   name: 'user',
   asyncData({ store, route }) {
+    store.dispatch('rewards/getRewardsMain', { user_id: route.params.id })
+    store.dispatch('photos/getPhotosMain', { user_id: route.params.id })
+    store.dispatch('videos/getVideosMain', { user_id: route.params.id })
+
     return store.dispatch('profile/getUser', { user_id: route.params.id })
   },
   components: {

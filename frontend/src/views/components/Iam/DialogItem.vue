@@ -2,7 +2,7 @@
 
   <div
     class="dialogs-list__item"
-    :class="item.id == activeId ? 'active' : ''"
+    :class="item.user_dialog.id == activeId ? 'active' : ''"
     @click="goToDialog(item.user.id)">
     <div
       class="dialogs-list__item-avatar">
@@ -28,7 +28,9 @@
           class="me">
           Вы:
         </span>
-        {{ item.user_dialog.user_messages[0].message }}
+        <span
+          class="mess"
+          v-html="item.user_dialog.user_messages[0].message"></span>
       </div>
     </div>
   </div>

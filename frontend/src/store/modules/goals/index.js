@@ -90,6 +90,14 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.RESET_GOALS](state, payload) {
+    state.goals = [];
+  },
+
+  [TYPES.RESET_SINGLE](state, payload) {
+    state.single = null;
+  },
+
   [TYPES.SET_SINGLE](state, payload) {
     state.single = payload;
   },

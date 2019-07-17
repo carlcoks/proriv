@@ -5,6 +5,7 @@ const config = require('../config')
 const vueConfig = require('./vue-loader.config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -78,15 +79,23 @@ const webpackConfig = {
     ]
   },
   performance: {
-    maxEntrypointSize: 300000,
+    maxEntrypointSize: 3000000,
     hints: isProduction ? 'warning' : false,
   },
 }
 
 if (isProduction) {
   webpackConfig.plugins = [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false },
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: { warnings: false },
+    // }),
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false
+        }
+      },
+      parallel: true
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new ExtractTextPlugin({

@@ -44,6 +44,13 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.RESET_RESUME](state, payload) {
+    state.resume = null;
+    state.education = [];
+    state.job = [];
+    state.card = [];
+  },
+
   [TYPES.UPDATE_USERCARD](state, payload) {
     state.card = payload.value;
   },

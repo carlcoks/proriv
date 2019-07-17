@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import functions from '@/modules/functions';
 
 export default {
@@ -99,11 +98,11 @@ export default {
       return videosmain;
     }
   },
-  created() {
-    this.getVideosMain({user_id: this.$route.params.id});
-  },
+  // created() {
+  //   this.getVideosMain({user_id: this.$route.params.id});
+  // },
   methods: {
-    ...mapActions('videos', ['getVideosMain']),
+    // ...mapActions('videos', ['getVideosMain']),
 
     returnBlock(link) {
       return functions.returnVideoBlock(link, 'small');

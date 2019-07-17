@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   data() {
     return {
@@ -77,12 +75,12 @@ export default {
       return rewards;
     }
   },
-  created() {
-    this.getRewardsMain({user_id: this.$route.params.id});
-  },
-  methods: {
-    ...mapActions('rewards', ['getRewardsMain']),
-  }
+  // created() {
+  //   this.getRewardsMain({user_id: this.$route.params.id});
+  // },
+  // methods: {
+  //   ...mapActions('rewards', ['getRewardsMain']),
+  // }
 }
 </script>
 

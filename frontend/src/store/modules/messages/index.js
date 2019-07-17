@@ -13,7 +13,6 @@ const state = {
 
 const actions = {
   async getDialogs({ commit, rootState }, data) {
-    commit(TYPES.RESET_DIALOGS);
     try {
       const response = await http.get('/api/v1/dialogs', {
         headers: {
@@ -32,7 +31,6 @@ const actions = {
   },
 
   async getMessages ({ commit, rootState }, data) {
-    commit(TYPES.RESET_MESSAGES);
     try {
       const response = await http.get('/api/v1/messages', {
         headers: {
@@ -46,11 +44,29 @@ const actions = {
       })
 
       commit(TYPES.SET_MESSAGES, response.data.result);
-
+      return true;
     } catch(e) {
       console.log(e);
     }
-  }
+  },
+
+  async sendMessage ({ commit, rootState }, data) {
+    try {
+      const response = await http.post('/api/v1/messages', data, {
+        headers: {
+          'Authorization': Auth.getAuthenticationHeader(rootState),
+        },
+        params: {
+          user_id: Auth.getUserId(rootState),
+        }
+      })
+
+      const { result } = response.data;
+      commit(TYPES.ADD_MESSAGE, result);
+    } catch(e) {
+      console.log(e);
+    }
+  },
 }
 
 const mutations = {
@@ -73,11 +89,38 @@ const mutations = {
     }
   },
 
+  [TYPES.ADD_MESSAGE](state, payload) {
+    if (payload) {
+      state.messages.unshift(payload.message);
+
+      state.dialogs.map((item, i) => {
+        if (item.user_dialog.id == payload.dialog.user_dialog.id) {
+          state.dialogs.splice(i, 1);
+        }
+      })
+
+      state.dialogs.unshift(payload.dialog);
+    }
+  },
+
+  [TYPES.ADD_NEW_MESSAGE](state, payload) {
+    let newItem = payload.dialog;
+    if (state.activeDialog == payload.dialog.user_dialog.id) {
+      state.messages.unshift(payload.message);
+    }
+    state.dialogs.map((item, i) => {
+      if (parseInt(item.user_dialog.id) == parseInt(payload.dialog.user_dialog.id)) {
+        state.dialogs.splice(i, 1);
+      }
+    })
+    state.dialogs.unshift(newItem);
+  },
+
   [TYPES.SET_ACTIVE_DIALOG](state, payload) {
     if (state.dialogs && payload) {
       for (let key in state.dialogs) {
         if (parseInt(state.dialogs[key].user.id) == parseInt(payload.sel)) {
-          state.activeDialog = state.dialogs[key].id;
+          state.activeDialog = state.dialogs[key].user_dialog.id;
         }
       }
     }

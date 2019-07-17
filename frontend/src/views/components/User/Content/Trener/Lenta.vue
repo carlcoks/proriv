@@ -29,6 +29,9 @@ import AddNew from './Lenta/AddNew';
 import ListItem from './Lenta/List';
 
 export default {
+  initialMutations: [
+    'lenta/RESET_LENTA',
+  ],
   asyncData ({ store, route }) {
     return store.dispatch('lenta/getLenta', { user_id: route.params.id })
   },

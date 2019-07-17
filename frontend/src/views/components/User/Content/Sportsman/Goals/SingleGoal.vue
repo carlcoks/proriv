@@ -81,6 +81,10 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
+  name: 'user-goal',
+  initialMutations: [
+    'goals/RESET_SINGLE',
+  ],
   asyncData ({ store, route }) {
     return store.dispatch('goals/getGoal', { user_id: route.params.id, id: route.params.goal });
   },

@@ -20,9 +20,8 @@
         {{ item.user.firstname }} {{ item.user.lastname }}:
       </div>
       <div
-        class="user-text">
-        {{ item.message }}
-      </div>
+        class="user-text"
+        v-html="item.message"></div>
     </div>
   </div>
 

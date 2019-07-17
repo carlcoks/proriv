@@ -40,13 +40,21 @@
             :user="forwho" />
 
           <div
-            v-if="messages && messages.length > 0"
-            class="messages-list">
+            v-if="messages"
+            class="messages-overlay">
 
-            <message-item
-              v-for="(item, i) in messages" :key="i"
-              :item="item"
-              :userId="user.user_id" />
+            <smooth-scrollbar
+              ref="smoothScrollbar">
+
+              <div
+                class="messages-list">
+                <message-item
+                  v-for="(item, i) in messages" :key="i"
+                  :item="item"
+                  :userId="user.user_id" />
+              </div>
+
+            </smooth-scrollbar>
 
           </div>
           <div
@@ -56,7 +64,7 @@
           </div>
 
           <div
-            v-if="activeDialog"
+            v-if="messages"
             class="form-send">
             <div class="form-send__input">
               <div
@@ -65,6 +73,7 @@
                 ref="textArea"
                 @click="placeholder = false"
                 @blur="placeholder = true, getPlaceholder()"
+                @keydown="keyDown($event)"
               ></div>
               <div
                 v-show="placeholder"
@@ -117,6 +126,10 @@ import EmojiBlock from '@/components/EmojiBlock';
 
 export default {
   name: 'messages',
+  // initialMutations: [
+  //   'messages/RESET_DIALOGS',
+  //   'messages/RESET_MESSAGES'
+  // ],
   asyncData ({ store, route }) {
     return store.dispatch('messages/getDialogs');
   },
@@ -140,24 +153,55 @@ export default {
   watch: {
     $route (to, from) {
       const { sel } = this.$route.query;
-      if (!isNaN(parseFloat(sel)) && isFinite(sel) && sel > 0) {
-        this.SET_ACTIVE_DIALOG({sel});
+      this.fetchQuery(sel);
+      this.scrollBlock();
+    },
+    messages(data) {
+      if (data) {
+        this.scrollBlock();
       }
-      if (this.activeDialog)
-        this.getMessages({dialog_id: this.activeDialog, sel: this.$route.query.sel})
+    }
+  },
+  sockets: {
+    addNewMessage(data) {
+      if (data) {
+        if (data.message && data.message.forwhoId == this.user.user_id) {
+          this.ADD_NEW_MESSAGE(data);
+        }
+      }
     },
   },
   mounted() {
     const { sel } = this.$route.query;
-    if (!isNaN(parseFloat(sel)) && isFinite(sel) && sel > 0) {
-      this.SET_ACTIVE_DIALOG({sel});
-    }
-    if (this.activeDialog)
-      this.getMessages({dialog_id: this.activeDialog, sel: this.$route.query.sel})
+    this.fetchQuery(sel);
+    this.scrollBlock();
   },
   methods: {
-    ...mapActions('messages', ['getMessages']),
-    ...mapMutations('messages', ['SET_ACTIVE_DIALOG']),
+    ...mapActions('messages', ['getMessages', 'sendMessage']),
+    ...mapMutations('messages', ['SET_ACTIVE_DIALOG', 'ADD_NEW_MESSAGE']),
+
+    scrollBlock() {
+      if (this.$refs.smoothScrollbar) {
+        setTimeout(() => {
+          const scrollbar = this.$refs.smoothScrollbar.scrollbar.scrollTop = 9999;
+        }, 500)
+      }
+    },
+
+    async fetchQuery(sel) {
+      if (!isNaN(parseFloat(sel)) && isFinite(sel) && sel > 0) {
+        this.SET_ACTIVE_DIALOG({sel});
+
+        let data = { dialog_id: 0, sel: this.$route.query.sel }
+        if (this.activeDialog)
+          data.dialog_id = this.activeDialog;
+
+        await this.getMessages(data);
+        setTimeout(() => {
+          this.scrollBlock();
+        }, 500)
+      }
+    },
 
     getPlaceholder() {
       const text = this.$refs.textArea.innerHTML;
@@ -177,30 +221,34 @@ export default {
     async send() {
       const text = this.$refs.textArea.innerHTML;
       if (text != '') {
-        const value = text.replace(/<!--[\s\S]*?--!?>/g, "").replace(/<(?!img)\/?[a-z][^>]*(>|$)/gi, "");
+        const value = text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
 
-        try {
-          const response = await http.post('/api/v1/messages', {
-            user_id: this.user.user_id,
-          }, {
-            headers: {
-              'Authorization': `Bearer ${this.user.token}`,
-            },
-          })
-
-
-        } catch(e) {
-          console.log(e);
-        }
+        await this.sendMessage({
+          mess: value,
+          dialog_id: this.activeDialog,
+          sel: this.$route.query.sel,
+          forWho: this.forwho,
+        });
 
         this.$refs.textArea.innerHTML = '';
         this.placeholder = true;
       }
     },
+
+    keyDown(e) {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        this.send();
+      }
+    }
   }
 }
 </script>
 
 <style lang="sass">
+  .scroll-content
+    width: 100%
+    height: 100%
+
   @import '@/styles/pages/im.sass'
 </style>

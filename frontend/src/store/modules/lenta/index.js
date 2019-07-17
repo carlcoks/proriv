@@ -64,6 +64,10 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.RESET_LENTA](state, payload) {
+    state.lenta = [];
+  },
+
   [TYPES.SET_LENTA](state, payload) {
     state.lenta = payload;
   },

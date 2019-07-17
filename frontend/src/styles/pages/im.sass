@@ -54,9 +54,17 @@
                 text-overflow: ellipsis
                 overflow: hidden
                 line-height: 25px
+                display: flex
+                align-items: center
                 .me
                   font-size: .85rem
                   color: $labelgrey
+                  margin-right: 5px
+                .mess
+                  display: flex
+                  align-items: center
+                  br
+                    display: none
           &.active
             background: $activedialog
             .user
@@ -104,12 +112,15 @@
         margin: auto
         max-width: 300px
         color: $labelgrey
+      &-overlay
+        height: calc(100% - 70px - 50px - 30px)
+        // overflow-y: auto
+        margin-bottom: 30px
       &-list
         display: flex
         flex-direction: column-reverse
-        height: calc(100% - 70px - 50px)
-        overflow-y: auto
-        padding-bottom: 30px
+        padding-bottom: 10px
+        min-height: 100%
         &__item
           padding: 0 100px 0 30px
           width: 100%
@@ -149,6 +160,9 @@
                 font-size: .85rem
               &-text
                 line-height: 20px
+                display: flex
+                flex-wrap: wrap
+                align-items: center
       .form-send
         width: 100%
         display: flex

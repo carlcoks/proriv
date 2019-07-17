@@ -58,8 +58,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   data() {
     return {
@@ -82,12 +80,12 @@ export default {
       return photos;
     }
   },
-  created() {
-    this.getPhotosMain({user_id: this.$route.params.id});
-  },
-  methods: {
-    ...mapActions('photos', ['getPhotosMain']),
-  }
+  // created() {
+  //   this.getPhotosMain({user_id: this.$route.params.id});
+  // },
+  // methods: {
+  //   ...mapActions('photos', ['getPhotosMain']),
+  // }
 }
 </script>
 

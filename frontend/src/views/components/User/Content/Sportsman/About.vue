@@ -28,6 +28,9 @@ import UserCard from './About/UserCard';
 import GoalsBlock from './About/Goals';
 
 export default {
+  initialMutations: [
+    'resume/RESET_RESUME',
+  ],
   asyncData ({ store, route }, data) {
     return store.dispatch('resume/getResume', { user_id: route.params.id });
   },

@@ -54,6 +54,7 @@ import SortBlock from './components/Treners/Sort';
 import TrenerCard from '@/components/Cards/TrenerCard';
 
 export default {
+  name: 'treners',
   asyncData ({ store, route }) {
     return store.dispatch('treners/getTreners');
   },
