@@ -13,18 +13,31 @@ export function createRouter(store) {
       if (savedPosition) {
         return savedPosition;
       }
+      if (to.meta && to.meta.scroll) {
+        return {
+          selector: '#lenta',
+          offset: { x: 0, y: 100 }
+        }
+      }
 
-      // return { x: 0, y: 0 };
+      if (to.meta && to.meta.page && from.meta && !from.meta.modal)
+        return { x: 0, y: 0 };
     },
     routes: [
       {
         path: '/',
         component: () => import('@/views/Main'),
+        meta: {
+          page: true,
+        },
         children: [
           {
             path: '',
             name: 'index',
             component: () => import('@/views/IndexPage'),
+            meta: {
+              page: true,
+            },
           },
         ],
       },
@@ -32,36 +45,57 @@ export function createRouter(store) {
         path: '/user/:id',
         name: 'user',
         component: () => import('@/views/User'),
+        meta: {
+          page: true,
+        },
         children: [
           {
             path: 'albums',
             name: 'user-albums',
             component: () => import('@/views/components/User/Albums/Index'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'albums/:album',
             name: 'user-album',
             component: () => import('@/views/components/User/Albums/Single'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'photos/:photo',
             name: 'user-photo',
             component: () => import('@/views/components/User/Photos/Index'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'videos',
             name: 'user-videos',
             component: () => import('@/views/components/User/Videos/Index'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'videos/:video',
             name: 'user-video',
             component: () => import('@/views/components/User/Videos/Single'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'rewards',
             name: 'user-rewards',
             component: () => import('@/views/components/User/Rewards/Index'),
+            meta: {
+              modal: true,
+            },
           },
           {
             path: 'about',
@@ -77,6 +111,7 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Content/Sportsman/Goals'),
             meta: {
               type: 'tabs',
+              scroll: true,
             },
           },
           {
@@ -85,6 +120,7 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Content/Sportsman/Goals/SingleGoal'),
             meta: {
               type: 'tabs',
+              scroll: true,
             },
           },
           {
@@ -101,6 +137,7 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Content/Trener/Lenta'),
             meta: {
               type: 'tabs',
+              scroll: true,
             },
           },
           {
@@ -108,6 +145,7 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Content/Trener/Videouroki'),
             meta: {
               type: 'tabs',
+              scroll: true,
             },
             children: [
               {
@@ -116,6 +154,7 @@ export function createRouter(store) {
                 component: () => import('@/views/components/User/Content/Trener/Videouroki/Index'),
                 meta: {
                   type: 'tabs',
+                  scroll: true,
                 },
               },
               {
@@ -124,6 +163,7 @@ export function createRouter(store) {
                 component: () => import('@/views/components/User/Content/Trener/Videouroki/Videokurs/Index'),
                 meta: {
                   type: 'tabs',
+                  scroll: true,
                 },
               },
               {
@@ -132,6 +172,7 @@ export function createRouter(store) {
                 component: () => import('@/views/components/User/Content/Trener/Videouroki/Single'),
                 meta: {
                   type: 'tabs',
+                  scroll: true,
                 },
               }
             ]
@@ -141,6 +182,7 @@ export function createRouter(store) {
             component: () => import('@/views/components/User/Content/Trener/Uslugi'),
             meta: {
               type: 'tabs',
+              scroll: true,
             },
             children: [
               {
@@ -149,6 +191,7 @@ export function createRouter(store) {
                 component: () => import('@/views/components/User/Content/Trener/Uslugi/Index'),
                 meta: {
                   type: 'tabs',
+                  scroll: true,
                 },
               },
             ]
@@ -159,12 +202,16 @@ export function createRouter(store) {
         path: '/treners',
         name: 'treners',
         component: () => import('@/views/Treners'),
+        meta: {
+          page: true,
+        },
       },
       {
         path: '/bookmarks',
         name: 'bookmarks',
         component: () => import('@/views/Bookmarks'),
         meta: {
+          page: true,
           requiredAuth: true,
         },
       },
@@ -173,6 +220,7 @@ export function createRouter(store) {
         name: 'messages',
         component: () => import('@/views/Im'),
         meta: {
+          page: true,
           requiredAuth: true,
         },
       },

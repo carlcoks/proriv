@@ -164,28 +164,45 @@ api.getAlbum = (UserAlbums, UserPhotos) => (req, res) => {
   const userId = req.query.user_id,
         albumId = req.query.album_id;
 
-  UserPhotos.hasOne(UserAlbums, {sourceKey: 'album_id', foreignKey: 'id'});
+  async.parallel([
+    (callback) => {
 
-  UserPhotos.findAll({
-    attributes: ['id', 'src', 'image'],
-    where: {
-      user_id: userId,
-      album_id: albumId,
+      UserPhotos.findAll({
+        attributes: ['id', 'src', 'image'],
+        where: {
+          user_id: userId,
+          album_id: albumId,
+        },
+        order: [['date_created', 'DESC']],
+      })
+      .then((photos) => {
+        callback(null, photos);
+      })
+
     },
-    order: [['date_created', 'DESC']],
-    include: [
-      {
-        model: UserAlbums,
+    (callback) => {
+      UserAlbums.findOne({
         attributes: ['title'],
+        where: {
+          id: albumId,
+          user_id: userId,
+        }
+      })
+      .then(album => {
+        callback(null, album);
+      })
+    }
+  ], (err, resultend) => {
+    if (err) return res.status(400).send({ success: false, message: err });
+
+    res.json({
+      success: true,
+      result: {
+        photos: resultend[0],
+        album: resultend[1],
       }
-    ]
+    })
   })
-  .then((result) => {
-
-    res.json({ success: true, result });
-
-  })
-
 }
 
 api.getPhotosMini = (UserPhotos) => (req, res) => {
@@ -229,6 +246,9 @@ api.getPhoto = (UserPhotos, PhotoComments, User, UserInfo) => (req, res) => {
 
       PhotoComments.findAll({
         attributes: ['id', 'comment', 'date_created'],
+        where: {
+          photo_id: photoId,
+        },
         order: [['date_created', 'ASC']],
         include: [
           {
@@ -260,6 +280,111 @@ api.getPhoto = (UserPhotos, PhotoComments, User, UserInfo) => (req, res) => {
     })
   })
 
+}
+
+api.addPhoto = (User, UserPhotos, Token) => (req, res) => {
+  if (Token) {
+
+    const userId = req.query.user_id,
+          albumId = req.query.album_id;
+
+    User.findOne({
+      attributes: ['id'],
+      where: {
+        id: userId
+      }
+    })
+    .then(user => {
+      if (!user) return res.status(401).send({ success: false, message: 'Пользователь не найден!' });
+
+      const busboy = new Busboy({ headers: req.headers });
+      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+        let newFileName = crypto.randomBytes(12).toString('hex'); // создаём случайное имя файла без расширения
+        let MiMe = mimetype.split("/").pop(); // берём расширение
+        let fileName = newFileName+'.'+MiMe; // новое имя файла с расширением
+
+        UserPhotos.findOne({
+          attributes: ['src'],
+          where: {
+            user_id: userId,
+            album_id: albumId,
+          },
+          order: [['date_created', 'DESC']],
+          limit: 1,
+        })
+        .then(album => {
+          const albumSrc = album.dataValues.src;
+
+          let saveTo = path.join(albumSrc, fileName);
+          file.pipe(fs.createWriteStream(saveTo));
+
+          file.on('end', function() {
+
+            async.parallel([
+              (callback) => {
+                sharp(saveTo)
+                  .resize(65, 65)
+                  .toFile(albumSrc+'/mini_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              },
+              (callback) => {
+                sharp(saveTo)
+                  .resize(270, 200)
+                  .toFile(albumSrc+'/cover_'+fileName, (err, info) => {
+                    if (err)
+                      return callback('Некоторые фотографии имеют не поддерживаемый формат');
+                    callback(null);
+                  });
+              }
+            ], (err, resultend) => {
+              if (err) return res.status(400).send({ success: false, message: err });
+
+              UserPhotos.create({
+                user_id: userId,
+                album_id: albumId,
+                src: albumSrc,
+                image: fileName,
+              })
+              .then((photo) => {
+                let photoId = photo.dataValues.id;
+
+                let result = {
+                  success: true,
+                  message: 'Фотография успешно добавлена',
+                  result: {
+                    id: photoId,
+                    src: albumSrc,
+                    image: fileName
+                  }
+                }
+
+                res.json(result);
+
+              })
+
+            })
+
+          }) // file on end
+
+        })
+
+      })
+
+      busboy.on('field', function(fieldname, value){
+      });
+
+      busboy.on('finish', function() {
+      })
+
+      return req.pipe(busboy);
+
+    })
+
+  } else return res.status(403).send({ success: false, message: 'Вы не авторизованы!' });
 }
 
 api.updatePhoto = (User, UserPhotos, Token) => (req, res) => {

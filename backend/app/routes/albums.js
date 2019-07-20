@@ -17,6 +17,7 @@ module.exports = (app) => {
 
   app.route('/api/v1/photo')
     .get(api.getPhoto(models.UserPhotos, models.PhotoComments, models.User, models.UserInfo))
+    .post(passport.authenticate('jwt', config.session), api.addPhoto(models.User, models.UserPhotos, app.get('secretpass')))
     .put(passport.authenticate('jwt', config.session), api.updatePhoto(models.User, models.UserPhotos, app.get('secretpass')))
 
   app.route('/api/v1/photo-comments')

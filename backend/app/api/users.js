@@ -86,13 +86,69 @@ api.signup = (User) => (req, res) => {
 //Восстановление пароля
 api.resetPassword = (User) => (req, res) => {
 
-  const email = req.body.email;
+  const email = req.body.email,
+        url = req.body.url;
+
   if (!email)
     res.status(400).json({ success: false, message: 'Введите email!' });
   else {
     User.findOne({
+      attributes: ['id', 'firstname', 'gender'],
       where: {
         email: email
+      }
+    })
+    .then(user => {
+      if (!user) return res.status(400).json({ success: false, message:  'Пользователь с таким email не найден!' });
+
+      const resetHash = generatePassword(10, false);
+      // const password = User.generateHash(newPass);
+
+      User.update({
+        reset_password_hash: resetHash
+      }, {
+        where: {
+          email: email
+        }
+      })
+      .then(() => {
+        let gender = user.dataValues.gender;
+
+        let link = `${url}?reset_hash=${resetHash}`;
+        let titleName = `Уважаем`;
+        if (gender == 1)
+          titleName += `ый`;
+        else
+          titleName += `ая`;
+
+        let text =	'<div style="font-size: 24px; background: #3e4156; color: #ffffff; padding: 2px 20px; margin-bottom: 40px">СпортТут</div>';
+        text += `<div style="padding: 0 20px">`;
+        text += `<div style="color: #3e4156; font: 700 18px / 24px 'arial' , sans-serif; margin-bottom: 15px;">${titleName}, ${user.dataValues.firstname}</div>`;
+        text += `<div>Перейдите по ссылке, для продолжения смены пароля: <a href="${link}" target="_blank" style="color: #0055c4; text-decoration: none;">${link}</a></div>`;
+        text += `<div>Если вы не запрашивали восстановление пароля, просто проигнорируйте это письмо.</div>`;
+        text += `</div>`;
+
+        mailer.sendMail('Восстановление пароля', text, email, 'html');
+        res.json({ success: true, message: 'Инструкции отправлены на вашу почту!' });
+
+      })
+
+    })
+  }
+
+}
+
+api.acceptResetPassword = (User) => (req, res) => {
+
+  const hash = req.body.hash;
+
+  if (!hash)
+    res.status(400).json({ success: false, message: 'Не указан hash!' });
+  else {
+    User.findOne({
+      attributes: ['id', 'email', 'firstname', 'gender'],
+      where: {
+        reset_password_hash: hash
       }
     })
     .then(user => {
@@ -105,16 +161,28 @@ api.resetPassword = (User) => (req, res) => {
         password: password
       }, {
         where: {
-          email: email
+          id: user.dataValues.id,
+          email: user.dataValues.email
         }
       })
-      .then(user => {
-        const text = `Ваш новый пароль: ${newPass}`;
+      .then(() => {
+        const gender = user.dataVaules.gender;
 
-        (async () => {
-          const response = await mailer.sendMail('Восстановление пароля', text, email);
-          res.json({ success: true, message: 'Новый пароль отправлен на вашу почту!' })
-        })()
+        let link = `${url}?reset_hash=${resetHash}`;
+        let titleName = `Уважаем`;
+        if (gender == 1)
+          titleName += `ый`;
+        else
+          titleName += `ая`;
+
+        let text =	'<div style="font-size: 24px; background: #3e4156; color: #ffffff; padding: 2px 20px; margin-bottom: 40px">СпортТут</div>';
+        text += `<div style="padding: 0 20px">`;
+        text += `<div style="color: #3e4156; font: 700 18px / 24px 'arial' , sans-serif; margin-bottom: 15px;">${titleName}, ${user.dataValues.firstname}</div>`;
+        text += `<div>Ваш новый пароль для входа: ${newPass}</div>`;
+        text += `</div>`;
+
+        mailer.sendMail('Восстановление пароля', text, email, 'html');
+        res.json({ success: true, message: 'Новый пароль отправлен на вашу почту!' });
 
       })
 

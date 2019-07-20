@@ -11,10 +11,6 @@
     <div
       v-if="$route.path == '/'">
 
-      <after-signup />
-      <after-accept />
-      <recovery-pass />
-
       <footer-block />
 
     </div>
@@ -22,6 +18,10 @@
     <left-side
       v-if="$route.path != '/' && user.auth"
       :userId="user.user_id" />
+
+    <after-signup />
+    <after-accept />
+    <recovery-pass />
 
   </div>
 
@@ -78,6 +78,7 @@ export default {
   },
   mounted() {
     this.checkAcceptEmail();
+    this.checkAccpetResetPassword();
   },
   methods: {
     ...mapActions(['getAllSport', 'getCountries']),
@@ -96,7 +97,22 @@ export default {
           console.log('Err: ', response.data.message);
         }
       }
-    }
+    },
+
+    async checkAccpetResetPassword() {
+      const { query } = this.$route;
+      if (query["reset-hash"]) {
+        const hash = query["reset-hash"];
+
+        try {
+          const response = await http.post('/api/v1/accept-reset-password', {hash})
+          if (response.data.success)
+            this.CHANGE_AFTER_RESET_MODAL({ bg: true, modal: true, })
+        } catch({response}) {
+          console.log('Err: ', response.data.message);
+        }
+      }
+    },
   }
 };
 </script>

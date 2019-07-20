@@ -1,9 +1,9 @@
 <template>
 
-  <div
-    v-if="single">
+  <div>
 
     <modal-layout
+      v-if="!addPhoto.modal"
       :bgShow="true"
       :modalShow="true"
       @close="$router.push(`/user/${$route.params.id}/albums`)">
@@ -22,14 +22,14 @@
               Альбомы
             </button>
           </div>
-          {{ single[0].user_album.title }}
+          {{ single.album.title }}
         </div>
         <div
           class="modalBlock-cards">
           <a
             v-if="user_profile.id == user.user_id"
             href="/add"
-            @click.prevent=""
+            @click.prevent="CHANGE_ADD_PHOTO_MODAL({ bg: true, modal: true })"
             class="itemCard addCard">
             <div
               class="addBtn">
@@ -43,7 +43,7 @@
           </a>
 
           <photo-list
-            v-for="(item, i) in single" :key="i"
+            v-for="(item, i) in single.photos" :key="i"
             :item="item"
             :link="`/user/${$route.params.id}/photos/${item.id}`" />
 
@@ -52,13 +52,18 @@
 
     </modal-layout>
 
+    <add-photo
+      v-if="user.user_id == user_profile.id" />
+
   </div>
 
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+
 import ModalLayout from '@/components/Modals/ModalLayout';
+import AddPhoto from '@/components/Modals/User/AddPhoto';
 import PhotoList from './PhotoList';
 
 export default {
@@ -68,13 +73,17 @@ export default {
   },
   components: {
     ModalLayout,
+    AddPhoto,
     PhotoList,
   },
   computed: {
     ...mapState('profile', ['user_profile']),
     ...mapState('user', ['user']),
-    ...mapState('albums', ['single']),
+    ...mapState('albums', ['single', 'addPhoto']),
   },
+  methods: {
+    ...mapMutations('albums', ['CHANGE_ADD_PHOTO_MODAL']),
+  }
 }
 </script>
 

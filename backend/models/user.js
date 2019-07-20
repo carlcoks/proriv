@@ -44,6 +44,9 @@ module.exports = function(sequelize, Sequelize) {
     accept_email_hash: {
       type: Sequelize.STRING,
     },
+    reset_password_hash: {
+      type: Sequelize.STRING,
+    }
   }, {
     tableName: 'users',
     // classMethods: {

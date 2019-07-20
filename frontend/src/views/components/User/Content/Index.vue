@@ -16,7 +16,7 @@
         <router-view
           v-if="$route.meta.type == 'tabs'" />
 
-        <div
+        <!-- <div
           v-else>
 
           <resume-block
@@ -25,7 +25,7 @@
           <about-block
             v-if="user_profile.user_status.id == 2" />
 
-        </div>
+        </div> -->
 
       </transition>
 

@@ -51,9 +51,10 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+
 import ModalLayout from '@/components/Modals/ModalLayout';
-import AlbumList from './AlbumList';
 import AddAlbum from '@/components/Modals/User/AddAlbum';
+import AlbumList from './AlbumList';
 
 export default {
   name: 'user-alboms',

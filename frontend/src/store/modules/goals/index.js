@@ -81,10 +81,10 @@ const actions = {
       return response.data;
     } catch(e) {
       const { response } = e;
-      if (response) {
-        let result = { success: false, message: response.data.message };
-        return result;
-      }
+      let result = { success: false, message: 'Произошла ошибка' };
+      if (response)
+        result.message = response.data.message;
+      return result;
     }
   },
 }

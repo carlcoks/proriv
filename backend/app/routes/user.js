@@ -9,6 +9,8 @@ module.exports = (app) => {
     .post(api.signup(models.User));
   app.route('/api/v1/reset-password')
     .post(api.resetPassword(models.User))
+  app.route('/api/v1/accept-reset-password')
+    .post(api.acceptResetPassword(models.User))
   app.route('/api/v1/accept-email')
     .post(api.acceptEmail(models.User));
 

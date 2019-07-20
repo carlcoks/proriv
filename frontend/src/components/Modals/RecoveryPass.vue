@@ -12,10 +12,17 @@
         Восстановление пароля
       </div>
       <div
+        v-if="stateStart"
         class="modalBlock-text">
         Введите адрес вашего почтового ящика и мы отправим  вам письмо с информацией для восстановления пароля
       </div>
       <div
+        v-else
+        class="modalBlock-text">
+        На ваш email отправлено письмо, с дальнейшими действиями по смене пароля.
+      </div>
+      <div
+        v-if="stateStart"
         class="modalBlock-input">
         <input
           type="text"
@@ -32,11 +39,18 @@
       <div
         class="modalBlock-btn">
         <button
+          v-if="stateStart"
           type="button"
           class="btn send"
-          :disabled="disabled"
           @click.prevent="send()">
-          {{ btnText }}
+          Отправить
+        </button>
+        <button
+          v-else
+          type="button"
+          class="btn send"
+          @click.prevent="close()">
+          Закрыть
         </button>
         <span
           v-if="error"
@@ -52,8 +66,9 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import ModalLayout from './ModalLayout';
 import http from '@/utils/api';
+
+import ModalLayout from './ModalLayout';
 
 export default {
   components: {
@@ -62,10 +77,9 @@ export default {
   data() {
     return {
       email: '',
-      disabled: false,
-      btnText: 'Отправить',
       error: '',
       reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
+      stateStart: true,
     }
   },
   computed: {
@@ -80,6 +94,9 @@ export default {
     ...mapMutations('layout', ['CHANGE_RECOVERY_PASS_MODAL']),
 
     close () {
+      this.email = '';
+      this.error = '';
+      this.stateStart = true;
       this.CHANGE_RECOVERY_PASS_MODAL({ bg: false, modal: false, })
     },
 
@@ -97,17 +114,16 @@ export default {
         return false;
       }
 
-      try {
-        const response = await http.post('/api/v1/reset-password', {email: this.email})
-        this.disabled = true;
-        this.btnText = 'Новый пароль отправлен';
+      const url = document.location.protocol + '//' + document.location.host;
 
-        setTimeout(() => {
-          this.email = '';
-          this.btnText = 'Отправить';
-          this.disabled = false;
-          this.close();
-        }, 3000)
+      try {
+        const response = await http.post('/api/v1/reset-password', {
+          email: this.email,
+          url: url,
+        })
+
+        this.email = '';
+        this.stateStart = false;
 
       } catch({response}) {
         if (response)
