@@ -5,12 +5,12 @@ const api = {};
 
 api.analitics = (Users, Peoples, Service, Vectors, Token) => (req, res) => {
 	if(Token) {
-		const userId = req.query.user_id,
-			  serviceId = req.params.id;
+		const serviceId = req.params.id;
 
 		let people = [],
 			peopleData = {},
-			serviceData = {};
+			serviceData = {},
+			serviceToPeople = [];
 
 		peopleData.birthday = {};
 		peopleData.city = {};
@@ -98,61 +98,69 @@ api.analitics = (Users, Peoples, Service, Vectors, Token) => (req, res) => {
 			});
 
 			Service.findAll({
-				attributes: ['people_id'],
+				attributes: ['people_id', 'service_id'],
 			    where: {
 			      service_id: serviceId,
 			    },
 			}).then((service) => {
 				service.forEach(function(value, i, arr) {
-					if(people[value.dataValues.people_id] != undefined) {
-						if(serviceData.birthday[people[value.dataValues.people_id].birthday]) {
-							serviceData.birthday[people[value.dataValues.people_id].birthday] = serviceData.birthday[people[value.dataValues.people_id].birthday] + 1;
-						} else {
-							serviceData.birthday[people[value.dataValues.people_id].birthday] = 1;
+					// if(!serviceToPeople[value.dataValues.service_id] || serviceToPeople[value.dataValues.service_id].indexOf(value.dataValues.people_id) == -1) {
+						if(people[value.dataValues.people_id] != undefined) {
+							if(serviceData.birthday[people[value.dataValues.people_id].birthday]) {
+								serviceData.birthday[people[value.dataValues.people_id].birthday] = serviceData.birthday[people[value.dataValues.people_id].birthday] + 1;
+							} else {
+								serviceData.birthday[people[value.dataValues.people_id].birthday] = 1;
+							}
+
+							if(serviceData.city[people[value.dataValues.people_id].city]) {
+								serviceData.city[people[value.dataValues.people_id].city] = serviceData.city[people[value.dataValues.people_id].city] + 1;
+							} else {
+								serviceData.city[people[value.dataValues.people_id].city] = 1;
+							}
+
+							if(serviceData.family[people[value.dataValues.people_id].family]) {
+								serviceData.family[people[value.dataValues.people_id].family] = serviceData.family[people[value.dataValues.people_id].family] + 1;
+							} else {
+								serviceData.family[people[value.dataValues.people_id].family] = 1;
+							}
+
+							if(serviceData.job[people[value.dataValues.people_id].job]) {
+								serviceData.job[people[value.dataValues.people_id].job] = serviceData.job[people[value.dataValues.people_id].job] + 1;
+							} else {
+								serviceData.job[people[value.dataValues.people_id].job] = 1;
+							}
+
+							if(serviceData.gender[people[value.dataValues.people_id].gender]) {
+								serviceData.gender[people[value.dataValues.people_id].gender] = serviceData.gender[people[value.dataValues.people_id].gender] + 1;
+							} else {
+								serviceData.gender[people[value.dataValues.people_id].gender] = 1;
+							}
+
+							if(serviceData.license[people[value.dataValues.people_id].license]) {
+								serviceData.license[people[value.dataValues.people_id].license] = serviceData.license[people[value.dataValues.people_id].license] + 1;
+							} else {
+								serviceData.license[people[value.dataValues.people_id].license] = 1;
+							}
+
+							if(serviceData.cars[people[value.dataValues.people_id].cars]) {
+								serviceData.cars[people[value.dataValues.people_id].cars] = serviceData.cars[people[value.dataValues.people_id].cars] + 1;
+							} else {
+								serviceData.cars[people[value.dataValues.people_id].cars] = 1;
+							}
+
+							if(serviceData.childs[people[value.dataValues.people_id].childs]) {
+								serviceData.childs[people[value.dataValues.people_id].childs] = serviceData.childs[people[value.dataValues.people_id].childs] + 1;
+							} else {
+								serviceData.childs[people[value.dataValues.people_id].childs] = 1;
+							}
 						}
 
-						if(serviceData.city[people[value.dataValues.people_id].city]) {
-							serviceData.city[people[value.dataValues.people_id].city] = serviceData.city[people[value.dataValues.people_id].city] + 1;
-						} else {
-							serviceData.city[people[value.dataValues.people_id].city] = 1;
-						}
-
-						if(serviceData.family[people[value.dataValues.people_id].family]) {
-							serviceData.family[people[value.dataValues.people_id].family] = serviceData.family[people[value.dataValues.people_id].family] + 1;
-						} else {
-							serviceData.family[people[value.dataValues.people_id].family] = 1;
-						}
-
-						if(serviceData.job[people[value.dataValues.people_id].job]) {
-							serviceData.job[people[value.dataValues.people_id].job] = serviceData.job[people[value.dataValues.people_id].job] + 1;
-						} else {
-							serviceData.job[people[value.dataValues.people_id].job] = 1;
-						}
-
-						if(serviceData.gender[people[value.dataValues.people_id].gender]) {
-							serviceData.gender[people[value.dataValues.people_id].gender] = serviceData.gender[people[value.dataValues.people_id].gender] + 1;
-						} else {
-							serviceData.gender[people[value.dataValues.people_id].gender] = 1;
-						}
-
-						if(serviceData.license[people[value.dataValues.people_id].license]) {
-							serviceData.license[people[value.dataValues.people_id].license] = serviceData.license[people[value.dataValues.people_id].license] + 1;
-						} else {
-							serviceData.license[people[value.dataValues.people_id].license] = 1;
-						}
-
-						if(serviceData.cars[people[value.dataValues.people_id].cars]) {
-							serviceData.cars[people[value.dataValues.people_id].cars] = serviceData.cars[people[value.dataValues.people_id].cars] + 1;
-						} else {
-							serviceData.cars[people[value.dataValues.people_id].cars] = 1;
-						}
-
-						if(serviceData.childs[people[value.dataValues.people_id].childs]) {
-							serviceData.childs[people[value.dataValues.people_id].childs] = serviceData.childs[people[value.dataValues.people_id].childs] + 1;
-						} else {
-							serviceData.childs[people[value.dataValues.people_id].childs] = 1;
-						}
-					}
+						// if(!serviceToPeople[value.dataValues.service_id]) {
+							// serviceToPeople[value.dataValues.service_id] = [];
+						// }
+						
+						// serviceToPeople[value.dataValues.service_id].push(value.dataValues.people_id);
+					// } 
 				});
 
 				res.json({ 

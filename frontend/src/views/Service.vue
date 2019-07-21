@@ -27,22 +27,22 @@
 					</tr>
 					<tr 
 						class="table__col"
-						v-for="(value, i) in item">
+						v-for="(value, b) in item">
 						<td
 							class="table_row">
-							{{ i }}
+							{{ b }}
 						</td>
 						<td 
 							class="table_row">
-							{{ data.peopleData[i] }}	
+							{{ data.peopleData[i][b] }}	
 						</td>
 						<td
 							class="table_row">
 							{{ value }}		
 						</td>
 						<td
-							class="table_row">
-							{{ count(data.peop) }}		
+							class="table_row">	
+							{{ Number((value / data.peopleData[i][b]) * 100).toFixed(0) + '%' }}
 						</td>
 					</tr>
 			</table>
@@ -85,5 +85,6 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="sass">
+  @import '@/styles/pages/service.sass'
 </style>
