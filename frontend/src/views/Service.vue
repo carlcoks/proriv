@@ -14,7 +14,11 @@
 						</td>
 						<td
 							class="table_row">
-							Кол. человек	
+							Кол. человек		
+						</td>
+						<td
+							class="table_row">
+							Кол. человек пользующийся услугой
 						</td>
 						<td
 							class="table_row">
@@ -28,9 +32,17 @@
 							class="table_row">
 							{{ i }}
 						</td>
+						<td 
+							class="table_row">
+							{{ data.peopleData[i] }}	
+						</td>
 						<td
 							class="table_row">
 							{{ value }}		
+						</td>
+						<td
+							class="table_row">
+							{{ count(data.peop) }}		
 						</td>
 					</tr>
 			</table>
