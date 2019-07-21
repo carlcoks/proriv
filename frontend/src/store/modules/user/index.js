@@ -78,6 +78,12 @@ const actions = {
 }
 
 const mutations = {
+  [TYPES.SET_USER_PROFILE](state, payload) {
+    for (let key in payload) {
+      state.user.profile[key] = payload[key];
+    }
+  },
+
   [TYPES.SET_USER](state, payload) {
     for (let key in payload) {
       state.user[key] = payload[key];

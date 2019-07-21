@@ -58,7 +58,7 @@
       <div
         class="wr">
         <div
-          v-if="loading == null || loading == true"
+          v-if="loading == null || loading == true || loading == 'start'"
           class="download-block__files-content">
           <div
             class="downloaded">
@@ -69,6 +69,7 @@
                 class="downloaded-list__item"
                 v-for="(item, i) in uploaded" :key="i">
                 {{ item.name }}<span
+                  v-if="loading != 'start'"
                   class="delete"
                   @click="deleteFile(i)">
                   <img
@@ -81,8 +82,8 @@
             class="download-block__files-btns">
             <button
               class="btn startAnalize"
-              @click.prevent="analize()">
-              Начать анализ
+              @click.prevent="loading != 'start' ? analize() : ''">
+              {{ loading == 'start' ? 'Идёт анализ...' : 'Начать анализ'}}
             </button>
           </div>
         </div>
@@ -178,6 +179,8 @@ export default {
       this.uploaded.map((item, i) => {
         form.append('file_'+i, item.file);
       })
+
+      this.loading = 'start';
 
       const response = await this.uploadForm(form);
 

@@ -40,7 +40,7 @@ api.uploadFile = (Users, Peoples, Service, Vectors, Token) => (req, res) => {
 
         file.on('end', function() {
 
-          let tablePeople = xlsx.parse(saveTo);
+          let tablePeople = xlsx.parse(saveTo); // Открываем новый загруженный файл и парсим его
 
           tablePeople = tablePeople[0]['data'];
 
@@ -48,9 +48,9 @@ api.uploadFile = (Users, Peoples, Service, Vectors, Token) => (req, res) => {
 
           if (tablePeople && tablePeople.length > 0 && tablePeople[0].length > 3) {
 
-            tablePeople.forEach(function(item, i, arr) {
+            tablePeople.forEach(function(item, i, arr) { // перебираем все строки из xlsx
 
-              if (i != 0) {
+              if (i != 0) { // первая строка игнорируем заголовки
 
                 let model = {
                   people_id: item[0],
@@ -81,90 +81,70 @@ api.uploadFile = (Users, Peoples, Service, Vectors, Token) => (req, res) => {
 
             let endPeoples = [];
 
-            // Peoples.bulkCreate(array)
-            //   .then(() => {
-              Vectors.findAll()
-                .then(allVecs => {
+            // Берем все исходные векторы
+            Vectors.findAll()
+              .then(allVecs => {
+                // Сравниваем каждый вектор с ново загруженными
+                async.each(allVecs, (item, callback) => {
+                  let vec1 = JSON.parse(item.vector);
 
-                  allVecs.map((item, its) => {
-                    let vec1 = JSON.parse(item.vector);
+                  async.each(vectors, (newvect, callback2) => {
+                    let vec2 = JSON.parse(newvect.vector);
 
-                    vectors.map(newvect => {
-                      let vec2 = JSON.parse(newvect.vector);
+                    let top = 0, bot1 = 0, bot2 = 0;
 
-                      let top = 0, bot1 = 0, bot2 = 0;
+                    Array.from(Array(6)).map((el, i) => {
+                      if (i != 0)
+                        top += parseFloat(vec1[i]*vec2[i]);
+                    });
 
-                      Array.from(Array(6)).map((el, i) => {
-                        if (i != 0)
-                          top += parseFloat(vec1[i]*vec2[i]);
-                      });
+                    Array.from(Array(6)).map((el, i) => {
+                      if (i != 0)
+                        bot1 += parseFloat(Math.pow(vec1[i], 2));
+                    });
+                    bot1 = parseFloat(Math.sqrt(bot1));
 
-                      Array.from(Array(6)).map((el, i) => {
-                        if (i != 0)
-                          bot1 += parseFloat(Math.pow(vec1[i], 2));
-                      });
-                      bot1 = parseFloat(Math.sqrt(bot1));
+                    Array.from(Array(6)).map((el, i) => {
+                      if (i != 0)
+                        bot2 += parseFloat(Math.pow(vec2[i], 2));
+                    });
+                    bot2 = parseFloat(Math.sqrt(bot2));
 
-                      Array.from(Array(6)).map((el, i) => {
-                        if (i != 0)
-                          bot2 += parseFloat(Math.pow(vec2[i], 2));
-                      });
-                      bot2 = parseFloat(Math.sqrt(bot2));
+                    const angle = parseFloat(top / (parseFloat(bot1 * bot2))); // значение косинуса между векторов
+                    if (angle.toFixed(2) > 0.8)
+                      endPeoples.push(item.people_id); // записываем наиболее подходящих людей
 
-                      const angle = parseFloat(top / (parseFloat(bot1 * bot2)));
-                      if (angle.toFixed(2) > 0.8)
-                        endPeoples.push(item.people_id);
-
-                    })
-
+                    callback2(null);
+                  }, (err, endcallback2) => {
+                    if (err) return res.status(400).send({ success: false, message: err })
+                    callback(null);
                   })
 
+                }, (err, endcallback) => {
+                  if (err) return res.status(400).send({ success: false, message: err })
+
                   Service.findAll({
-                    attributes: [],
+                    attributes: ['people_id', 'service_id'],
                     where: {
                       people_id: {
                         [Op.in]: endPeoples
                       }
                     }
                   })
-                  .then((recs) => {
+                  .then((recommends) => {
 
-                    res.json({ success: true, result: recs });
+                    // const buffer = xlsx.build([{name: "Recoomendations", data: recommends}]);
+
+                    res.json({ success: true, });
 
                   })
 
                 })
 
-
-                // Vectors.bulkCreate(vectors)
-                //   .then(() => {
-                //     res.json({ success: true });
-                //   })
-
-              // })
+              })
 
           } else {
-
-            // tablePeople.forEach(function(item, i, arr) {
-            //
-            //   if (i != 0) {
-            //
-            //     let model = {
-            //       name: item[0] != "NULL" ? item[0] : '',
-            //       people_id: item[1] != "NULL" && item[1] != '' ? item[1] : 0,
-            //       service_id: item[2] != "NULL" && item[2] != '' ? item[2] : 0,
-            //     };
-            //
-            //     array.push(model)
-            //   }
-            //
-            // })
-            //
-            // Service.bulkCreate(array)
-            //   .then(() => {
-                res.json({ success: true });
-              // })
-
+            res.json({ success: true });
           }
 
         })

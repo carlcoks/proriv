@@ -9,8 +9,8 @@ const db = new Sequelize(config[dbName].dbname, config[dbName].dbuser, config[db
   host: config[dbName].host,
   dialect: 'mysql',
   pool: {
-    max: 100,
-    min: 1,
+    max: 1000,
+    min: 0,
     acquire: 30000,
     idle: 10000
   }
