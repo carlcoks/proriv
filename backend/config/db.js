@@ -7,6 +7,7 @@ const dbName = isProduction ? 'dbProd' : 'dbDev';
 
 const db = new Sequelize(config[dbName].dbname, config[dbName].dbuser, config[dbName].dbpass, {
   host: config[dbName].host,
+  port: config[dbName].port,
   dialect: 'mysql',
   pool: {
     max: 1000,
