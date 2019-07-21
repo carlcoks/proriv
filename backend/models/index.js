@@ -11,6 +11,7 @@ const dbName = isProduction ? 'dbProd' : 'dbDev';
 const sequelize = new Sequelize(config[dbName].dbname, config[dbName].dbuser, config[dbName].dbpass, {
   host: config[dbName].host,
   dialect: 'mysql',
+  port: config[dbName].port,
   define: {
     timestamps: false
   },

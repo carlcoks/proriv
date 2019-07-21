@@ -5,14 +5,14 @@ module.exports = {
   session: { session: false },
   dbProd: {
     host: "localhost",
-    port: 3306,
-    dbuser: "",
+    port: 3308,
+    dbuser: "root",
     dbpass: "",
-    dbname: ""
+    dbname: "analitics"
   },
   dbDev: {
     host: "localhost",
-    port: 3306,
+    port: 3308,
     dbuser: "root",
     dbpass: "",
     dbname: "analitics"
