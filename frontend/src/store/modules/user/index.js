@@ -13,15 +13,12 @@ const state = {
   },
   errorAuth: '',
   errorSignup: '',
-  acceptEmail: {
-    show: false
-  },
 }
 
 const actions = {
   async getUser ({ commit }, data) {
     try {
-      const response = await http.get(`/api/v1/user`, {
+      const response = await http.get(`/user`, {
         params: data
       });
       const { success, result } = response.data;
@@ -35,7 +32,7 @@ const actions = {
 
   async auth ({ commit }, params) { // Вход
     try {
-      const response = await http.post(`/api/v1/auth`, params);
+      const response = await http.post(`/auth`, params);
       const data = response.data;
       if (data.success) {
         fetch('/session', {
@@ -43,15 +40,14 @@ const actions = {
           headers: {
             "Content-type": "application/x-www-form-urlencoded"
           },
-          body: `auth=true&firstname=${data.profile.firstname}&token=${data.token}&user_id=${data.user_id}`,
+          body: `auth=true&name=${data.name}&token=${data.token}&user_id=${data.user_id}`,
         }).then(() => {
-
           commit('SET_USER', { auth: true, profile: data.profile, token: data.token, user_id: data.user_id });
-          commit('layout/CHANGE_LOGIN_MODAL', { bg: false, modal: false, active: 'signin', }, {root: true})
           commit('SET_ERROR', { errorAuth: '', });
-
         })
-      }
+        return data;
+      } else
+        return data;
     } catch({response}) {
       if (response)
         commit('SET_ERROR', { errorAuth: response.data.message })
@@ -60,13 +56,11 @@ const actions = {
 
   async signup ({ commit }, data) { // Регистрация
     try {
-      const response = await http.post(`/api/v1/signup`, data);
+      const response = await http.post(`/signup`, data);
       const result = response.data;
-      if (result.success) {
+      if (result.success)
         commit('SET_ERROR', { errorSignup: '' })
-        commit('layout/CHANGE_LOGIN_MODAL', { bg: false, modal: false, active: 'signin', }, {root: true})
-        commit('layout/CHANGE_AFTER_SIGNUP_MODAL', { bg: true, modal: true, }, {root: true})
-      }
+      return result;
     } catch ({response}) {
       if (response)
         commit('SET_ERROR', { errorSignup: response.data.message })
@@ -84,14 +78,6 @@ const actions = {
 }
 
 const mutations = {
-  [TYPES.SET_USER_PROFILE](state, payload) {
-    if (payload) {
-      for (let key in payload) {
-        state.user.profile[key] = payload[key];
-      }
-    }
-  },
-
   [TYPES.SET_USER](state, payload) {
     for (let key in payload) {
       state.user[key] = payload[key];

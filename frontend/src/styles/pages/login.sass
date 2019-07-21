@@ -1,0 +1,135 @@
+@import "../vars"
+
+.login-page
+  background: $loginbg
+  width: 100%
+  &__block
+    width: 100%
+    min-height: 100vh
+    display: flex
+    justify-content: center
+    align-items: center
+    .login-form
+      width: 100%
+      border-radius: 10px
+      background: $white
+      box-shadow: 0px 3px 10px $loginshadow
+      display: flex
+      .left-side
+        width: 45%
+        padding: 80px 60px
+        &__tabs
+          width: 100%
+          display: flex
+          align-items: flex-start
+          margin-bottom: 80px
+          .tab
+            cursor: pointer
+            margin-right: 20px
+            color: $logintabs
+            font-size: 1.5rem
+            line-height: 30px
+            position: relative
+            &:after
+              content: ''
+              position: absolute
+              top: 100%
+              left: 0
+              width: 0%
+              height: 2px
+              background: $logintabs
+              transition: width .1s
+            &:hover
+              &:after
+                width: 100%
+            &.active
+              font-family: $MB
+              font-weight: bold
+        .form-block
+          display: flex
+          flex-direction: column
+          width: 100%
+          max-width: 305px
+          &__line
+            width: 100%
+            margin-bottom: 30px
+            position: relative
+            .label
+              position: absolute
+              top: 9px
+              left: 16px
+              line-height: 20px
+              color: $inptborder
+              transition: all .3s
+              z-index: 0
+            .inpt
+              line-height: 20px
+              width: 100%
+              border-radius: 10px
+              border: 1px solid $inptborder
+              box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.05)
+              padding: 10px 16px
+              color: $logintabs
+              font-size: 0.9rem
+              line-height: 18px
+              position: relative
+              background: none
+              z-index: 1
+              &:focus + .label, &:valid + .label
+                font-size: 0.8rem
+                line-height: 16px
+                background: $white
+                padding: 0 4px
+                top: -9px
+                font-weight: 500
+                left: 13px
+                z-index: 1
+            .line-btns
+              display: flex
+              align-items: center
+              justify-content: space-between
+              .checkbox
+                input[type="checkbox"]
+                  display: none
+                  &:checked + .checkbox-label
+                    .squad
+                      background: url(/img/icons/checked.png)no-repeat 50%
+                &-label
+                  cursor: pointer
+                  display: flex
+                  align-items: center
+                  font-weight: 600
+                  font-size: 0.875rem
+                  line-height: 17px
+                  color: $logintabs
+                  .squad
+                    margin-right: 12px
+                    border: 1px solid #B2B2B2
+                    box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.05)
+                    border-radius: 3px
+                    width: 20px
+                    height: 20px
+                    display: block
+              .link
+                color: $btnaccept
+                font-size: 0.875rem
+                line-height: 17px
+      .right-side
+        width: 55%
+        background: $loginblue
+        padding-top: 80px
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-between
+        border-radius: 0 10px 10px 0
+        &__title
+          margin-bottom: 125px
+          color: $black
+          font-size: 2.375rem
+          line-height: 46px
+          letter-spacing: 0.04em
+          font-family: $ML
+          b
+            font-family: $MBL
+        &__img

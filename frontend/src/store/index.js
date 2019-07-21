@@ -1,21 +1,21 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import state from './state';
-import mutations from './mutations';
-import * as TYPES from './types';
-import * as modules from './modules';
+// import state from './state';
+// import mutations from './mutations';
 import * as actions from './actions';
+// import * as TYPES from './types';
+import * as modules from './modules';
 
 Vue.use(Vuex);
 
 export function createStore(context) {
   const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
-    state,
     modules,
+    // state,
     actions,
-    mutations,
+    // mutations,
   });
 
   if (process.browser && context.state) {
@@ -26,4 +26,4 @@ export function createStore(context) {
   return store;
 }
 
-export { TYPES };
+// export { TYPES };

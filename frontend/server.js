@@ -98,13 +98,13 @@ function render(req, res) {
 
 app.post('/session', (req, res) => {
   if (!req.body.auth) return res.status(400).send({ success: false })
-  const { auth, firstname, token, user_id } = req.body;
+  const { auth, name, token, user_id } = req.body;
   req.session.user = {
     auth,
-    profile: {
-      firstname,
-    },
     token,
+    profile: {
+      name: name,
+    },
     user_id,
   };
   res.json({ success: true })

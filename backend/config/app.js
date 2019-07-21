@@ -7,7 +7,7 @@ const express = require('express'),
       passport = require('passport'),
       passportConfig = require('./passport')(passport),
       jwt = require('jsonwebtoken'),
-      { portSocket, secret } = require('./index.js');
+      { secret } = require('./index.js');
 
 app.use(express.static('.'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,13 +17,6 @@ app.use(cors());
 app.use(passport.initialize());
 
 app.set('secretpass', secret);
-
-const io = require('socket.io')(portSocket);
-app.use((req, res, next) => {
-    req.io = io;
-    next();
-});
-require('../socket')(io);
 
 consign({ cwd: 'services' })
       .include('../app/setup')

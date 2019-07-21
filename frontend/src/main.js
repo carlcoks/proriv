@@ -8,9 +8,6 @@ import { createStore } from './store';
 
 import './extensions/object'
 
-import { emoji } from './utils/emoji.js'
-Vue.prototype.$emoji = emoji; // Глобальная переменная для создания img эмоции
-
 Vue.config.productionTip = false;
 
 Vue.use(Meta);

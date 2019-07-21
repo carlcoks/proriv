@@ -1,48 +1,50 @@
 <template>
 
 	<section
-		class="index-page">
+		class="index">
+		<div
+			class="wr">
 
-		<div
-			class="bg-image"></div>
-		<div
-			class="content">
-			<h1
-				class="content-title">
-				Найди своего тренера
-			</h1>
-			<form
-				class="content-form">
+			<div
+				class="index-page">
+
+				<h1
+					class="index-page__title">
+					Здравствуйте, {{ user.profile.name }}
+				</h1>
 
 				<div
-					class="content-form__line">
-					<div
-						class="content-form__line-input">
-						<input
-							type="text"
-							class="inpt"
-							v-model.trim="search"
-							placeholder="Например, тренер по боксу">
-						<button
-							class="btn btn-search">
-							<img
-								src="/img/icons/search.png"
-								alt="">
-						</button>
+					class="index-page__block">
+					<router-link
+						to="/download"
+						class="index-page__block-card">
 						<div
-							class="line"></div>
-					</div>
+							class="image">
+							<img
+								src="/img/icons/girl.svg">
+						</div>
+						<div
+							class="title">
+							Загрузить данные
+						</div>
+					</router-link>
+					<router-link
+						to="/analytics"
+						class="index-page__block-card">
+						<div
+							class="image">
+							<img
+								src="/img/icons/robot.svg">
+						</div>
+						<div
+							class="title">
+							Аналитика
+						</div>
+					</router-link>
 				</div>
 
-			</form>
-			<div
-				class="content-btn">
-				<router-link
-					to="/treners"
-					class="content-btn__link">
-					Каталог тренеров
-				</router-link>
 			</div>
+
 		</div>
 
 	</section>
@@ -50,12 +52,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'index',
-	data() {
-		return {
-			search: '',
-		}
+	computed: {
+		...mapState('user', ['user']),
 	}
 }
 </script>

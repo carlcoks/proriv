@@ -1,95 +1,25 @@
 .header
-  z-index: 100
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  padding: 20px 0
-  &.not-main
-    background: $darkblue
+  width: 100%
+  padding: 15px 0
   &-block
     display: flex
     align-items: center
     justify-content: space-between
     .logo
-      .link
-        font-family: $CR
-        font-size: 1rem
-        color: $white
+      font-size: 1.25rem
+      line-height: 24px
+      letter-spacing: 0.04em
+      font-family: $ML
+      color: $black
+      b
+        font-family: $MBL
     .menu
-      flex: 1 0 auto
-      margin: 0 130px
-      &-ul
-        display: flex
-        align-items: center
-        &__item
-          margin: 0 10px
-          padding: 10px
-          .link
-            font-family: $CR
-            color: $white
-            font-size: 1rem
-    .btns
       display: flex
       align-items: center
-      &-search
-        margin-right: 25px
-      &-user
-        position: relative
-        .active
-          position: relative
-          z-index: 2001
-          display: block
-    .user
-      display: flex
-      align-items: center
-      position: relative
-      &-link
-        display: flex
-        align-items: center
-        &__name
-          margin-right: 30px
-          color: $white
-        &__image
-          margin-right: 10px
-          .img
-            border-radius: 50%
-            width: 40px
-            height: 40px
-            background: $white
-      &-arrow
-        width: 20px
-        height: 20px
-        border-radius: 50%
-        border: 1px solid $arrowborder
-        display: flex
-        justify-content: center
-        align-items: center
-      &-menu
-        position: absolute
-        top: calc(100% + 10px)
-        right: 10px
-        background: $white
-        padding: 15px 0
-        border-radius: 5px
-        box-shadow: 0px 2px 10px 5px rgba(0, 4, 7, 0.1)
-        &__ul
-          display: flex
-          flex-direction: column
-        &__item
-          width: 100%
-        &__link
-          display: block
-          padding: 15px 30px
-          width: 100%
-          color: $black
-          transition: background .3s
-          &:hover
-            background: $profilemenu
-        &:after
-          content: ''
-          position: absolute
-          top: -10px
-          right: 0
-          border: 10px solid transparent
-          border-right: 16px solid $white
+      justify-content: space-between
+      &-item
+        margin-right: 60px
+        .link
+          color: $logintabs
+          font-size: 1.25rem
+          line-height: 24px

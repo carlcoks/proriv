@@ -24,8 +24,8 @@ export default context => new Promise((resolve, reject) => {
   if (user) {
     let state = store.state;
     const { auth, profile, token, user_id } = user;
-    state.user.user = {auth, profile, token, user_id, errorAuth: '', errorSignup: ''};
-    store.dispatch('user/getUser', { user_id })
+    state.user.user = {auth, token, profile, user_id, errorAuth: '', errorSignup: ''};
+    // store.dispatch('user/getUser', { user_id })
     store.replaceState(state);
   }
 

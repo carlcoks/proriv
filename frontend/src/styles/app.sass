@@ -44,32 +44,18 @@ body
   margin: 0
   padding: 0
   width: 100%
-  font-family: $CR
   font-size: 16px
   line-height: 15px
   min-width: 320px
   position: relative
   overflow-x: hidden
   color: #000
+  font-family: $MR
+  background: $mainbg
 
 #app
   min-height: 100%
   width: 100%
-
-.modal-bg
-  position: fixed
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  z-index: 1000
-  background: rgba(0, 0, 0, .5)
-
-.pt-80
-  padding-top: 80px
-
-.bg-fon
-  background: $userbg
 
 .wr
   max-width: 1220px
@@ -89,66 +75,15 @@ body
 @import './layout/header'
 @import './layout/footer'
 
-.error-mess
+.error
   position: absolute
   top: calc(100% + 5px)
   left: 0
-  color: red
-  white-space: nowrap
   font-size: 0.75rem
-
-.error
-  position: relative
-  animation: error .3s forwards
-
-@keyframes error
-  0%
-    left: -10px
-  20%
-    left: 8px
-  40%
-    left: -6px
-  60%
-    left: 4px
-  80%
-    left: -2px
-  100%
-    left: 0
-
-.fade-enter-active, .fade-leave-active
-  transition: opacity .3s
-.fade-enter, .fade-leave-to
-  opacity: 0
+  color: red
 
 .slideLeft-enter-active, .slideLeft-leave-active
   transition: all .2s
 .slideLeft-enter, .slideLeft-leave-to
   transform: translateX(35px)
-  opacity: 0
-
-.slideTop-enter-active, .slideTop-leave-active
-  transition: all .3s
-.slideTop-enter, .slideTop-leave-to
-  transform: translateY(50px)
-  opacity: 0
-
-.slideTopBlock-enter-active, .slideTopBlock-leave-active
-  transition: all .1s
-.slideTopBlock-enter, .slideTopBlock-leave-to
-  transform: translateY(10px)
-  opacity: 0
-
-.slideMove
-  backface-visibility: hidden
-  z-index: 1
-.slideMove-move
-  transition: all .5s ease-out
-.slideMove-enter-active
-  transition: all .3s
-.slideMove-leave-active
-  transition: all .2s
-  position: absolute
-  z-index: 0
-.slideMove-enter,
-.slideMove-leave-to
   opacity: 0

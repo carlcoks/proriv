@@ -5,7 +5,7 @@ const PassportJWT = require('passport-jwt'),
       models = require('../app/setup');
 
 module.exports = (passport) => {
-  const User = models.User;
+  const Users = models.Users;
 
   const parameters = {
     secretOrKey: config.secret,
@@ -14,7 +14,7 @@ module.exports = (passport) => {
 
   passport.use(new Strategy(parameters, (payload, done) => {
 
-    User.findOne({
+    Users.findOne({
       attributes: ['id'],
       where: {
         id: payload.user.id

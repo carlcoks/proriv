@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
   res.locals.context = {
-    title: 'СпортТут',
+    title: 'Dolinger Analytics',
     url: req.url,
     user: req.session.user,
     state: {
